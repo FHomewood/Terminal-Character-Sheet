@@ -59,7 +59,7 @@ class Character:
 
 		self.max_hp = 0
 		self.xp = 0
-		self.money = 0
+		self.wealth = 0
 
 		self.features = {}
 		self.skill_proficiencies = []
@@ -90,7 +90,7 @@ class Spell:
 			self.material = material
 			self.duration = duration
 			self.function = function
-			
+
 def define_art_blocks(context):
 	context.art_blocks["Header"] = InteractiveBlock( (1, 2) , 0,
 		""".-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-.""")
@@ -200,7 +200,7 @@ def define_art_blocks(context):
 |        |
  \\      / 
   '-..-'  """)
-	context.art_blocks["Initiative"] = InteractiveBlock( (14, 53) , 0,
+	context.art_blocks["Initiative"] = InteractiveBlock( (14, 53) , 4,
 		""".------------.
 |/          \\|
 | INITIATIVE |
@@ -214,7 +214,7 @@ def define_art_blocks(context):
 |      ft   |
 |\\         /|
 '-----------'""")
-	context.art_blocks["Hit Points"] = InteractiveBlock( (20, 42) , 0,
+	context.art_blocks["Hit Points"] = InteractiveBlock( (20, 42) , 1,
 		""" .-----------------------------------.
 { HIT POINTS:                        }
 { TEMP HIT POINTS:                   }
@@ -246,6 +246,10 @@ def define_art_blocks(context):
 |                                     ]
 |                                     ]
  '...................................'""")
+	context.art_blocks["Coin Pouch"] = InteractiveBlock( (45, 66) , 6,
+		"""_.-----------<
+[    P G S C  
+[             """)
 
 	context.art_blocks["Features Line 0"] = InteractiveBlock( (32, 44) , 3,
 		"""___________________________________""")
@@ -311,10 +315,6 @@ def define_art_blocks(context):
 		"""______________________""")
 	context.art_blocks["Features Line 15"].function = feature_box_select(context,15)
 
-	context.art_blocks["Coin Pouch"] = InteractiveBlock( (45, 66) , 2,
-		"""_.-----------<
-[    P G S C  
-[             """)
 	context.art_blocks["Footer"] = InteractiveBlock( (50, 1) , 0,
 		"""'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'""")
 	context.art_blocks["Acrobatics"] = InteractiveBlock( (29, 11) , 6,
@@ -353,17 +353,17 @@ def define_art_blocks(context):
 		"""   Stealth                  """)
 	context.art_blocks["Survival"] = InteractiveBlock( (46, 11) , 6,
 		"""   Survival                 """)
-	context.art_blocks["Casting"] = InteractiveBlock( (25, 44) , 2,
+	context.art_blocks["Casting"] = InteractiveBlock( (25, 44) , 4,
 		""" CASTING  
           
           
           """)
-	context.art_blocks["Attack Roll"] = InteractiveBlock( (25, 55) , 2,
+	context.art_blocks["Attack Roll"] = InteractiveBlock( (25, 55) , 4,
 		""" ATTACK ROLL 
              
              
              """)
-	context.art_blocks["Spell Save DC"] = InteractiveBlock( (25, 69) , 2,
+	context.art_blocks["Spell Save DC"] = InteractiveBlock( (25, 69) , 4,
 		""" SPELL DC 
           
           
@@ -399,10 +399,26 @@ def define_art_blocks(context):
  ((o))                                                 )
   '-'-------------------------------------------------'""")
 	context.art_blocks["Popup"].function=popup_function
+	context.art_blocks["Popup"].scroll=0
+	context.art_blocks["Popup"].text=""
 	context.art_blocks["Popup"].render=False
 	context.art_blocks["Popup"].active=False
-	context.art_blocks["STR"].function = roll(context,1,20,2)
 
+
+
+def neatify_string(context,string, splitlen=48):
+	chunks = []
+	while string != '':
+		if len(string) >= splitlen:
+			trial_chunk = ' '.join( string[0:splitlen].split(' ')[0:-1] )
+			if '\n' in trial_chunk:
+				trial_chunk = trial_chunk.split('\n')[0]
+			string = string[len(trial_chunk)+1:]
+		else:
+			trial_chunk = string
+			string = ''
+		chunks.append(trial_chunk)
+	return chunks
 
 def feature_box_select(context, line_index):
 	def func(context):
@@ -410,42 +426,109 @@ def feature_box_select(context, line_index):
 			current_headings = list(context.get_current_feature().keys())
 			if line_index < len(current_headings):
 				selected_heading = list(context.get_current_feature().keys())[line_index]
-				context.feature_box_keys.append(selected_heading)
+				selected_attribute = context.get_current_feature()[selected_heading]
+				if type(selected_attribute) == dict:
+					context.feature_box_keys.append(selected_heading)
+				elif type(selected_attribute) == str:
+					string = selected_attribute
+					popup_text = f""" 
+   {selected_heading}
+ 
+"""
+					for line in neatify_string(context,string):
+						popup_text +=f" {line}\n"
+					activate_popup(context,popup_text)
+				elif type(selected_attribute) == Spell:
+					spell = selected_attribute
+					popup_text = f""" 
+  {spell.name}
+  Level {spell.level} {spell.school}
+  
+  Cast Time: {spell.cast_time}
+  Range: {spell.range}
+  Duration: {spell.duration}
+  {"V" * bool(spell.verbal)}{"S" * bool(spell.somatic)}{"M" * bool(spell.material)}              {"C" * bool(spell.concentration)} {"R" * bool(spell.ritual)}
+                ~~~~~~~~~~~~~~~~~
+ 
+"""
+					for line in neatify_string(context,spell.description):
+						popup_text +=f" {line}\n"
+					activate_popup(context,popup_text)
+				elif type(selected_attribute) == Item:
+					print(selected_attribute.value)
 		if mouse_event(context) in ["Right Click", "Double Right Click"]:
 			context.feature_box_keys = context.feature_box_keys[:-1]
+
 	return func
 
 def roll(context,n,k,b):
 	def func(context):
 		if mouse_event(context) =="Double Left Click":
-			for index, block in context.art_blocks.items():
-				block.active = False
-			context.art_blocks["Popup"].render = True
-			context.art_blocks["Popup"].active = True
-			roll_val = sum([numpy.random.randint(1,20)]) + b
-			context.art_blocks["Popup"].var_array=[
-			[25,30,"        _-_."],
-			[26,30,"     _-',^. `-_."],
-			[27,30," ._-' ,'   `.   `-_ "],
-			[28,30,"!`-_._________`-':::"],
-			[29,30,"!   /\\        /\\::::"],
-			[30,30,f";  /  \\  {roll_val:02}  /..\\:::"],
-			[31,30,"! /    \\    /....\\::"],
-			[32,30,"!/      \\  /......\\:"],
-			[33,30,";--.___. \\/_.__.--;; "],
-			[34,30," '-_    `:!;;;;;;;'"],
-			[35,30,"    `-_, :!;;;''"],
-			[36,30,"        `-!'"]
-
-			]
+			rv = sum([numpy.random.randint(1,20)]) + b
+			popup_text = f""" {n}d{k}+{b}
+ 
+ 
+ 
+                      _-_.                    
+                   _-',^. `-_.                
+               ._-' ,'   `.   `-_             
+              !`-_._________`-':::            
+              !   /\\        /\\::::          
+              ;  /  \\  {rv:02}  /..\\:::          
+              ! /    \\    /....\\::          
+              !/      \\  /......\\:          
+              ;--.___. \\/_.__.--;;           
+               '-_    `:!;;;;;;;'             
+                  `-_, :!;;;''                
+                      `-!                     
+                                  """
+			activate_popup(context,popup_text)
 	return func
 
 def popup_function(context):
 	if "Right" in mouse_event(context):
 		for index, block in context.art_blocks.items():
 			if block.render: block.active = True
+		context.mouse_state = (0,0,0,0,0)
 		context.art_blocks["Popup"].render = False
 		context.art_blocks["Popup"].active = False
+	if "Scroll Up" in mouse_event(context):
+		context.art_blocks["Popup"].scroll = max(0,context.art_blocks["Popup"].scroll - 1)
+	if "Scroll Down" in mouse_event(context):
+		context.art_blocks["Popup"].scroll += 1
+	update_popup(context)
+
+def activate_popup(context, text=None):
+	for index, block in context.art_blocks.items():
+		block.active = False
+	context.art_blocks["Popup"].render = True
+	context.art_blocks["Popup"].active = True
+	context.art_blocks["Popup"].text = text
+	context.art_blocks["Popup"].scroll = 0
+	update_popup(context)
+
+
+def update_popup(context):
+	text = context.art_blocks["Popup"].text
+	scroll_offset = context.art_blocks["Popup"].scroll
+	temp_var_array = [[0,50,f'{scroll_offset}']]
+	line_number = 0
+	for paragraph in text.split('\n'):
+		for chunk in [paragraph[i:i+49] for i in range(0,len(paragraph), 49)]:
+			temp_var_array += [[line_number - scroll_offset + 20,16,chunk]]
+			line_number+=1
+	scroll_offset = min(len(temp_var_array),scroll_offset)
+	context.art_blocks["Popup"].var_array = temp_var_array[scroll_offset+1:scroll_offset+20]
+
+
+def get_mouse(context):
+	old_mouse_state = list(context.mouse_state)
+	new_mouse_state = list(curses.getmouse())
+
+	for attribute in range(len(new_mouse_state)):
+		if new_mouse_state[attribute] < 0:
+			new_mouse_state[attribute] = old_mouse_state[attribute]
+	context.mouse_state = tuple(new_mouse_state)
 
 def mouse_event(context):
 	code = context.mouse_state[-1]
@@ -464,6 +547,8 @@ def mouse_event(context):
 		2048: 'Right Button Press',
 		4096: 'Right Click',
 		8192: 'Double Right Click',
+		65536: 'Scroll Up',
+		2097152: 'Scroll Down',
 	}[code]
 	except:
 		return str(code)

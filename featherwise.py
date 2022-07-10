@@ -31,9 +31,6 @@ def init(context):
 	context.character.features = \
 	{
 		"Proficiencies":{
-			"Skills":{
-
-			},
 			"Weapons":{
 				"Dagger": None,
 				"Dart": None,
@@ -129,7 +126,12 @@ def init(context):
 	context.feature_box_keys = []
 
 	with open('./char_state.json') as _file:
-		context.character.owl = json.load(_file)['alter']
+		char_state = json.load(_file)
+
+	context.character.owl = char_state['alter']
+	context.character.hp = char_state['health']
+	context.character.temp_hp = char_state['temp_health']
+	context.character.wealth = char_state['coins']
 
 	{	'eenie': eenie,
 		'laucian': laucian,
@@ -138,101 +140,169 @@ def init(context):
 
 def update(context):
 	if not context.character: return
+
+
+	with open('./char_state.json') as _file:
+		char_state = json.load(_file)
+
+	context.character.owl = char_state['alter']
+	context.character.hp = char_state['health']
+	context.character.temp_hp = char_state['temp_health']
+	context.character.wealth = char_state['coins']
+
+
 	context.art_blocks['Character Name'].var_array = [[10, 21, context.character.name]]
 	context.art_blocks['Character Name'].function = change_char_name
 	context.art_blocks['Class'].var_array += [[10, 54, context.character._class]]
-	context.art_blocks['Level'].var_array += [[10, 63, f'{context.character.level}']]
-	context.art_blocks['Proficiency Bonus'].var_array += [[17, 13, f'{context.character.prof}']]
+	context.art_blocks['Level'].var_array += [[10, 63, f'{context.character.level:02}']]
+	context.art_blocks['Proficiency Bonus'].var_array += [[17, 13, f'{context.character.prof:+2}']]
 
 	context.art_blocks['STR'].var_array += [[ 16, 4, f'{context.character.str:02}']]
-	context.art_blocks['STR'].var_array += [[ 17, 4, f'{(context.character.str_mod := int(floor((context.character.str-10)/2))):+2}']]
+	context.character.str_mod = int(floor((context.character.str-10)/2))
+	context.art_blocks['STR'].var_array += [[ 17, 4, f'{context.character.str_mod:+2}']]
 
-	context.art_blocks['DEX'].var_array += [[ 21, 4, '14']]
-	context.art_blocks['DEX'].var_array += [[ 22, 4, '+2']]
+	context.art_blocks['DEX'].var_array += [[ 21, 4, f'{context.character.dex:02}']]
+	context.character.dex_mod = int(floor((context.character.dex-10)/2))
+	context.art_blocks['DEX'].var_array += [[ 22, 4, f'{context.character.dex_mod:+2}']]
 
-	context.art_blocks['CON'].var_array += [[ 26, 4, '14']]
-	context.art_blocks['CON'].var_array += [[ 27, 4, '+2']]
+	context.art_blocks['CON'].var_array += [[ 26, 4, f'{context.character.con:02}']]
+	context.character.con_mod = int(floor((context.character.con-10)/2))
+	context.art_blocks['CON'].var_array += [[ 27, 4, f'{context.character.con_mod:+2}']]
 
-	context.art_blocks['INT'].var_array += [[ 31, 4, '18']]
-	context.art_blocks['INT'].var_array += [[ 32, 4, '+4']]
+	context.art_blocks['INT'].var_array += [[ 31, 4, f'{context.character.int:02}']]
+	context.character.int_mod = int(floor((context.character.int-10)/2))
+	context.art_blocks['INT'].var_array += [[ 32, 4, f'{context.character.int_mod:+2}']]
 
-	context.art_blocks['WIS'].var_array += [[ 36, 4, '13']]
-	context.art_blocks['WIS'].var_array += [[ 37, 4, '+1']]
+	context.art_blocks['WIS'].var_array += [[ 36, 4, f'{context.character.wis:02}']]
+	context.character.wis_mod = int(floor((context.character.wis-10)/2))
+	context.art_blocks['WIS'].var_array += [[ 37, 4, f'{context.character.wis_mod:+2}']]
 
-	context.art_blocks['CHA'].var_array += [[ 41, 4, '12']]
-	context.art_blocks['CHA'].var_array += [[ 42, 4, '+1']]
+	context.art_blocks['CHA'].var_array += [[ 41, 4, f'{context.character.cha:02}']]
+	context.character.cha_mod = int(floor((context.character.cha-10)/2))
+	context.art_blocks['CHA'].var_array += [[ 42, 4, f'{context.character.cha_mod:+2}']]
+
 
 	context.art_blocks['Passive Perception'].var_array += [[ 47, 4, '11']]
 
 	context.art_blocks['Acrobatics'].var_array += [
 		[ 29, 12, '*' * ('Acrobatics' in context.character.skill_proficiencies)], 
-		[ 29, 35, '+2']]
+		[ 29, 35, f'{("Acrobatics" in context.character.skill_proficiencies) * context.character.prof + context.character.dex_mod:+2}']]
+
 	context.art_blocks['Animal Handling'].var_array += [
 		[ 30, 12, '*' * ('Animal Handling' in context.character.skill_proficiencies)], 
-		[ 30, 35, '+1']]
+		[ 30, 35, f'{("Animal Handling" in context.character.skill_proficiencies) * context.character.prof + context.character.wis_mod:+2}']]
+
 	context.art_blocks['Arcana'].var_array += [
 		[ 31, 12, '*' * ('Arcana' in context.character.skill_proficiencies)], 
-		[ 31, 35, '+6']]
+		[ 31, 35, f'{("Arcana" in context.character.skill_proficiencies) * context.character.prof + context.character.int_mod:+2}']]
+
 	context.art_blocks['Athletics'].var_array += [
 		[ 32, 12, '*' * ('Athletics' in context.character.skill_proficiencies)], 
-		[ 32, 35, '-1']]
+		[ 32, 35, f'{("Athletics" in context.character.skill_proficiencies) * context.character.prof + context.character.str_mod:+2}']]
+
 	context.art_blocks['Deception'].var_array += [
 		[ 33, 12, '*' * ('Deception' in context.character.skill_proficiencies)], 
-		[ 33, 35, '+1']]
+		[ 33, 35, f'{("Deception" in context.character.skill_proficiencies) * context.character.prof + context.character.cha_mod:+2}']]
+
 	context.art_blocks['History'].var_array += [
 		[ 34, 12, '*' * ('History' in context.character.skill_proficiencies)], 
-		[ 34, 35, '+4']]
+		[ 34, 35, f'{("History" in context.character.skill_proficiencies) * context.character.prof + context.character.int_mod:+2}']]
+
 	context.art_blocks['Insight'].var_array += [
 		[ 35, 12, '*' * ('Insight' in context.character.skill_proficiencies)], 
-		[ 35, 35, '+1']]
+		[ 35, 35, f'{("Insight" in context.character.skill_proficiencies) * context.character.prof + context.character.wis_mod:+2}']]
+
 	context.art_blocks['Intimidation'].var_array += [
 		[ 36, 12, '*' * ('Intimidation' in context.character.skill_proficiencies)], 
-		[ 36, 35, '+1']]
+		[ 36, 35, f'{("Intimidation" in context.character.skill_proficiencies) * context.character.prof + context.character.cha_mod:+2}']]
+
 	context.art_blocks['Investigation'].var_array += [
 		[ 37, 12, '*' * ('Investigation' in context.character.skill_proficiencies)], 
-		[ 37, 35, '+6']]
+		[ 37, 35, f'{("Investigation" in context.character.skill_proficiencies) * context.character.prof + context.character.int_mod:+2}']]
+
 	context.art_blocks['Medicine'].var_array += [
 		[ 38, 12, '*' * ('Medicine' in context.character.skill_proficiencies)], 
-		[ 38, 35, '+1']]
+		[ 38, 35, f'{("Medicine" in context.character.skill_proficiencies) * context.character.prof + context.character.wis_mod:+2}']]
+
 	context.art_blocks['Nature'].var_array += [
 		[ 39, 12, '*' * ('Nature' in context.character.skill_proficiencies)], 
-		[ 39, 35, '+4']]
+		[ 39, 35, f'{("Nature" in context.character.skill_proficiencies) * context.character.prof + context.character.int_mod:+2}']]
+
 	context.art_blocks['Perception'].var_array += [
 		[ 40, 12, '*' * ('Perception' in context.character.skill_proficiencies)], 
-		[ 40, 35, '+1']]
+		[ 40, 35, f'{("Perception" in context.character.skill_proficiencies) * context.character.prof + context.character.wis_mod:+2}']]
+
 	context.art_blocks['Performance'].var_array += [
 		[ 41, 12, '*' * ('Performance' in context.character.skill_proficiencies)], 
-		[ 41, 35, '+1']]
+		[ 41, 35, f'{("Performance" in context.character.skill_proficiencies) * context.character.prof + context.character.cha_mod:+2}']]
+
 	context.art_blocks['Persuasion'].var_array += [
 		[ 42, 12, '*' * ('Persuasion' in context.character.skill_proficiencies)], 
-		[ 42, 35, '+1']]
+		[ 42, 35, f'{("Persuasion" in context.character.skill_proficiencies) * context.character.prof + context.character.cha_mod:+2}']]
+
 	context.art_blocks['Religion'].var_array += [
 		[ 43, 12, '*' * ('Religion' in context.character.skill_proficiencies)], 
-		[ 43, 35, '+4']]
+		[ 43, 35, f'{("Religion" in context.character.skill_proficiencies) * context.character.prof + context.character.int_mod:+2}']]
+
 	context.art_blocks['Sleight of Hand'].var_array += [
 		[ 44, 12, '*' * ('Sleight of Hand' in context.character.skill_proficiencies)], 
-		[ 44, 35, '+2']]
+		[ 44, 35, f'{("Sleight of Hand" in context.character.skill_proficiencies) * context.character.prof + context.character.dex_mod:+2}']]
+
 	context.art_blocks['Stealth'].var_array += [
 		[ 45, 12, '*' * ('Stealth' in context.character.skill_proficiencies)], 
-		[ 45, 35, '+2']]
+		[ 45, 35, f'{("Stealth" in context.character.skill_proficiencies) * context.character.prof + context.character.dex_mod:+2}']]
+
 	context.art_blocks['Survival'].var_array += [
 		[ 46, 12, '*' * ('Survival' in context.character.skill_proficiencies)], 
-		[ 46, 35, '+1']]
+		[ 46, 35, f'{("Survival" in context.character.skill_proficiencies) * context.character.prof + context.character.wis_mod:+2}']]
 
-	context.art_blocks['Saving Throws'].var_array += [[ 22, 18, '-1']]
-	context.art_blocks['Saving Throws'].var_array += [[ 23, 18, '+2']]
-	context.art_blocks['Saving Throws'].var_array += [[ 24, 18, '+2']]
-	context.art_blocks['Saving Throws'].var_array += [[ 22, 30, '+6']]
-	context.art_blocks['Saving Throws'].var_array += [[ 23, 30, '+3']]
-	context.art_blocks['Saving Throws'].var_array += [[ 24, 30, '+1']]
 
-	context.art_blocks['Armour Class'].var_array += [[ 17, 46, '12']]
-	context.art_blocks['Initiative'].var_array += [[ 17, 59, '+2']]
-	context.art_blocks['Speed'].var_array += [[ 17, 73, '30']]
-	context.art_blocks['Hit Points'].var_array += [[ 21, 67, '16']]
-	context.art_blocks["Casting"].var_array += [[ 27, 47, '+4']]
-	context.art_blocks['Attack Roll'].var_array += [[ 27, 60, '+6']]
-	context.art_blocks['Spell Save DC'].var_array += [[ 27, 73, '14']]
+	context.art_blocks['Saving Throws'].var_array = [
+	[ 22, 18, f'{ ("STR" in context.character.saving_throws) * context.character.prof + context.character.str_mod:+2}'],
+	[ 23, 18, f'{ ("DEX" in context.character.saving_throws) * context.character.prof + context.character.dex_mod:+2}'],
+	[ 24, 18, f'{ ("CON" in context.character.saving_throws) * context.character.prof + context.character.con_mod:+2}'],
+	[ 22, 30, f'{ ("INT" in context.character.saving_throws) * context.character.prof + context.character.int_mod:+2}'],
+	[ 23, 30, f'{ ("WIS" in context.character.saving_throws) * context.character.prof + context.character.wis_mod:+2}'],
+	[ 24, 30, f'{ ("CHA" in context.character.saving_throws) * context.character.prof + context.character.cha_mod:+2}']]
+
+	context.character.armour_class = 10+context.character.dex_mod
+	context.art_blocks['Armour Class'].var_array += [[ 17, 46, f'{context.character.armour_class:02}']]
+	context.art_blocks['Initiative'].var_array += [[ 17, 59, f'{context.character.dex_mod:+2}']]
+	context.art_blocks['Speed'].var_array += [[ 17, 73, f'{context.character.spd:02}']]
+	context.art_blocks['Hit Points'].var_array += [[ 21, 67, f'{context.character.hp}']]
+	context.art_blocks["Casting"].var_array += [[ 27, 47, f'{context.character.int_mod:+2}']]
+	context.art_blocks['Attack Roll'].var_array += [[ 27, 60, f'{context.character.int_mod + context.character.prof:+2}']]
+	context.art_blocks['Spell Save DC'].var_array += [[ 27, 73, f'{8 + context.character.int_mod + context.character.prof}']]
+
+	wealth_str = ''.join([f'{i} ' for i in str(context.character.wealth)])
+	context.art_blocks['Coin Pouch'].var_array = [[ 47, 69, f'{wealth_str:>10}']]
+
+
+	context.art_blocks["STR"].function = roll(context,1,20,context.character.str_mod)
+	context.art_blocks["DEX"].function = roll(context,1,20,context.character.dex_mod)
+	context.art_blocks["CON"].function = roll(context,1,20,context.character.con_mod)
+	context.art_blocks["INT"].function = roll(context,1,20,context.character.int_mod)
+	context.art_blocks["WIS"].function = roll(context,1,20,context.character.wis_mod)
+	context.art_blocks["CHA"].function = roll(context,1,20,context.character.cha_mod)
+
+	context.art_blocks["Acrobatics"].function = roll(context,1,20,("Acrobatics" in context.character.skill_proficiencies) * context.character.prof + context.character.dex_mod)
+	context.art_blocks["Animal Handling"].function = roll(context,1,20,("Animal Handling" in context.character.skill_proficiencies) * context.character.prof + context.character.wis_mod)
+	context.art_blocks["Arcana"].function = roll(context,1,20,("Arcana" in context.character.skill_proficiencies) * context.character.prof + context.character.int_mod)
+	context.art_blocks["Athletics"].function = roll(context,1,20,("Athletics" in context.character.skill_proficiencies) * context.character.prof + context.character.str_mod)
+	context.art_blocks["Deception"].function = roll(context,1,20,("Deception" in context.character.skill_proficiencies) * context.character.prof + context.character.cha_mod)
+	context.art_blocks["History"].function = roll(context,1,20,("History" in context.character.skill_proficiencies) * context.character.prof + context.character.int_mod)
+	context.art_blocks["Insight"].function = roll(context,1,20,("Insight" in context.character.skill_proficiencies) * context.character.prof + context.character.wis_mod)
+	context.art_blocks["Intimidation"].function = roll(context,1,20,("Intimidation" in context.character.skill_proficiencies) * context.character.prof + context.character.cha_mod)
+	context.art_blocks["Investigation"].function = roll(context,1,20,("Investigation" in context.character.skill_proficiencies) * context.character.prof + context.character.int_mod)
+	context.art_blocks["Medicine"].function = roll(context,1,20,("Medicine" in context.character.skill_proficiencies) * context.character.prof + context.character.wis_mod)
+	context.art_blocks["Nature"].function = roll(context,1,20,("Nature" in context.character.skill_proficiencies) * context.character.prof + context.character.int_mod)
+	context.art_blocks["Perception"].function = roll(context,1,20,("Perception" in context.character.skill_proficiencies) * context.character.prof + context.character.wis_mod)
+	context.art_blocks["Performance"].function = roll(context,1,20,("Performance" in context.character.skill_proficiencies) * context.character.prof + context.character.cha_mod)
+	context.art_blocks["Persuasion"].function = roll(context,1,20,("Persuasion" in context.character.skill_proficiencies) * context.character.prof + context.character.cha_mod)
+	context.art_blocks["Religion"].function = roll(context,1,20,("Religion" in context.character.skill_proficiencies) * context.character.prof + context.character.int_mod)
+	context.art_blocks["Sleight of Hand"].function = roll(context,1,20,("Sleight of Hand" in context.character.skill_proficiencies) * context.character.prof + context.character.dex_mod)
+	context.art_blocks["Stealth"].function = roll(context,1,20,("Stealth" in context.character.skill_proficiencies) * context.character.prof + context.character.dex_mod)
+	context.art_blocks["Survival"].function = roll(context,1,20,("Survival" in context.character.skill_proficiencies) * context.character.prof + context.character.wis_mod)
 
 
 	for i in range(16):

@@ -41,7 +41,7 @@ def init(context):
 
 def update(context):
 	context.stdscr.clear()
-	context.mouse_state = curses.getmouse()
+	get_mouse(context)
 
 	for identifier, block in context.art_blocks.items():
 		if block.mouse_in_block(context) and \
