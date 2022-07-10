@@ -141,7 +141,7 @@ def update(context):
 	context.art_blocks['Character Name'].function = change_char_name
 	context.art_blocks['Class'].var_array += [[10, 54, context.character._class]]
 	context.art_blocks['Level'].var_array += [[10, 63, f'{context.character.level}']]
-	context.art_blocks['Proficiency Bonus'].var_array += [[17, 13, context.character.prof]]
+	context.art_blocks['Proficiency Bonus'].var_array += [[17, 13, f'{context.character.prof}']]
 
 	context.art_blocks['STR'].var_array += [[ 16, 4, '08']]
 	context.art_blocks['STR'].var_array += [[ 17, 4, '-1']]
