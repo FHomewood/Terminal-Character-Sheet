@@ -163,11 +163,28 @@ def define_art_blocks(context):
  '--------------------------' """)
 	context.art_blocks["Saving Throws"] = InteractiveBlock( (20, 12) , 0,
 		""" .----------------------. 
-{         .:/\\:.         }
-{ STR    :\\/20\\/:    INT }
-{ DEX    :/\\``/\\:    WIS }
-{ CON    `._\\/_.'    CHA }
+{                         }
+{                         }
+{                         }
+{                         }
  '----------------------' """)
+	context.art_blocks["STR Saving Throw"] = InteractiveBlock( (22,13), 3, 
+		""" STR    """)
+	context.art_blocks["DEX Saving Throw"] = InteractiveBlock( (23,13), 3, 
+		""" DEX    """)
+	context.art_blocks["CON Saving Throw"] = InteractiveBlock( (24,13), 3, 
+		""" CON    """)
+	context.art_blocks["INT Saving Throw"] = InteractiveBlock( (22,29), 3, 
+		"""    INT """)
+	context.art_blocks["WIS Saving Throw"] = InteractiveBlock( (23,29), 3, 
+		"""    WIS """)
+	context.art_blocks["CHA Saving Throw"] = InteractiveBlock( (24,29), 3, 
+		"""    CHA """)
+	context.art_blocks["Icosahedron"] = InteractiveBlock( (21,21), 3,
+		""" .:/\\:.  
+:\\/20\\/:
+:/\\``/\\:
+`._\\/_.' """)
 	context.art_blocks["Separator 1"] = InteractiveBlock( (26, 18) , 0,
 		"""~~~~~~~~~~~~~~~~""")
 	context.art_blocks["Skills Box"] = InteractiveBlock( (27, 10) , 0,
@@ -246,6 +263,7 @@ def define_art_blocks(context):
 |                                     ]
 |                                     ]
  '...................................'""")
+	context.art_blocks["Features Box"].scroll = 0
 	context.art_blocks["Coin Pouch"] = InteractiveBlock( (45, 66) , 6,
 		"""_.-----------<
 [    P G S C  
@@ -449,7 +467,7 @@ def feature_box_select(context, line_index):
   Duration: {spell.duration}
   {"V" * bool(spell.verbal)}{"S" * bool(spell.somatic)}{"M" * bool(spell.material)}              {"C" * bool(spell.concentration)} {"R" * bool(spell.ritual)}
                 ~~~~~~~~~~~~~~~~~
- 
+
 """
 					for line in neatify_string(context,spell.description):
 						popup_text +=f" {line}\n"
@@ -465,24 +483,7 @@ def roll(context,n,k,b):
 	def func(context):
 		if mouse_event(context) =="Double Left Click":
 			rv = sum([numpy.random.randint(1,20)]) + b
-			popup_text = f""" {n}d{k}+{b}
- 
- 
- 
-                      _-_.                    
-                   _-',^. `-_.                
-               ._-' ,'   `.   `-_             
-              !`-_._________`-':::            
-              !   /\\        /\\::::          
-              ;  /  \\  {rv:02}  /..\\:::          
-              ! /    \\    /....\\::          
-              !/      \\  /......\\:          
-              ;--.___. \\/_.__.--;;           
-               '-_    `:!;;;;;;;'             
-                  `-_, :!;;;''                
-                      `-!                     
-                                  """
-			activate_popup(context,popup_text)
+			context.art_blocks["Icosahedron"].var_array = [[22,24,f'{rv:02}']]
 	return func
 
 def popup_function(context):

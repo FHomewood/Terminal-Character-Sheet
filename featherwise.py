@@ -257,13 +257,12 @@ def update(context):
 		[ 46, 35, f'{("Survival" in context.character.skill_proficiencies) * context.character.prof + context.character.wis_mod:+2}']]
 
 
-	context.art_blocks['Saving Throws'].var_array = [
-	[ 22, 18, f'{ ("STR" in context.character.saving_throws) * context.character.prof + context.character.str_mod:+2}'],
-	[ 23, 18, f'{ ("DEX" in context.character.saving_throws) * context.character.prof + context.character.dex_mod:+2}'],
-	[ 24, 18, f'{ ("CON" in context.character.saving_throws) * context.character.prof + context.character.con_mod:+2}'],
-	[ 22, 30, f'{ ("INT" in context.character.saving_throws) * context.character.prof + context.character.int_mod:+2}'],
-	[ 23, 30, f'{ ("WIS" in context.character.saving_throws) * context.character.prof + context.character.wis_mod:+2}'],
-	[ 24, 30, f'{ ("CHA" in context.character.saving_throws) * context.character.prof + context.character.cha_mod:+2}']]
+	context.art_blocks['STR Saving Throw'].var_array = [[ 22, 18, f'{ ("STR" in context.character.saving_throws) * context.character.prof + context.character.str_mod:+2}']]
+	context.art_blocks['DEX Saving Throw'].var_array = [[ 23, 18, f'{ ("DEX" in context.character.saving_throws) * context.character.prof + context.character.dex_mod:+2}']]
+	context.art_blocks['CON Saving Throw'].var_array = [[ 24, 18, f'{ ("CON" in context.character.saving_throws) * context.character.prof + context.character.con_mod:+2}']]
+	context.art_blocks['INT Saving Throw'].var_array = [[ 22, 30, f'{ ("INT" in context.character.saving_throws) * context.character.prof + context.character.int_mod:+2}']]
+	context.art_blocks['WIS Saving Throw'].var_array = [[ 23, 30, f'{ ("WIS" in context.character.saving_throws) * context.character.prof + context.character.wis_mod:+2}']]
+	context.art_blocks['CHA Saving Throw'].var_array = [[ 24, 30, f'{ ("CHA" in context.character.saving_throws) * context.character.prof + context.character.cha_mod:+2}']]
 
 	context.character.armour_class = 10+context.character.dex_mod
 	context.art_blocks['Armour Class'].var_array += [[ 17, 46, f'{context.character.armour_class:02}']]
@@ -304,6 +303,14 @@ def update(context):
 	context.art_blocks["Stealth"].function = roll(context,1,20,("Stealth" in context.character.skill_proficiencies) * context.character.prof + context.character.dex_mod)
 	context.art_blocks["Survival"].function = roll(context,1,20,("Survival" in context.character.skill_proficiencies) * context.character.prof + context.character.wis_mod)
 
+
+	context.art_blocks["STR Saving Throw"].function = roll(context,1,20,("STR" in context.character.saving_throws) * context.character.prof + context.character.str_mod)
+	context.art_blocks["DEX Saving Throw"].function = roll(context,1,20,("DEX" in context.character.saving_throws) * context.character.prof + context.character.dex_mod)
+	context.art_blocks["CON Saving Throw"].function = roll(context,1,20,("CON" in context.character.saving_throws) * context.character.prof + context.character.con_mod)
+	context.art_blocks["INT Saving Throw"].function = roll(context,1,20,("INT" in context.character.saving_throws) * context.character.prof + context.character.int_mod)
+	context.art_blocks["WIS Saving Throw"].function = roll(context,1,20,("WIS" in context.character.saving_throws) * context.character.prof + context.character.wis_mod)
+	context.art_blocks["CHA Saving Throw"].function = roll(context,1,20,("CHA" in context.character.saving_throws) * context.character.prof + context.character.cha_mod)
+	context.art_blocks["Icosahedron"].function = roll(context,1,20,0)
 
 	for i in range(16):
 		headings = list(context.get_current_feature().keys())
