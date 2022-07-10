@@ -44,6 +44,53 @@ class InteractiveBlock:
 
 		return (x >= l and x <= r and y >= t and y < b)
 
+class Character:
+	def __init__(self):
+		self.name = ""
+		self.alignment = ""
+		self._class = ""
+
+		self.int = 0
+		self.str = 0
+		self.wis = 0
+		self.con = 0
+		self.dex = 0
+		self.cha = 0
+
+		self.max_hp = 0
+		self.xp = 0
+		self.money = 0
+
+		self.features = {}
+		self.skill_proficiencies = []
+
+class Item:
+	def __init__(self, name=None,description=None,weight=None,value=None, quantity=1):
+		self.name = name
+		self.description = description
+		self.weight = weight
+		self.value = value
+		self.quantity = quantity
+
+class Spell:
+	def __init__(self,
+		name=None,description=None,school=None,level=None,cast_time=None,
+		range=None,concentration=None,ritual=None,verbal=None,somatic=None,
+		material=None,duration=None,function=None):
+			self.name = name
+			self.description = description
+			self.school = school
+			self.level = level
+			self.cast_time = cast_time
+			self.range = range
+			self.concentration = concentration
+			self.ritual = ritual
+			self.verbal = verbal
+			self.somatic =somatic
+			self.material = material
+			self.duration = duration
+			self.function = function
+			
 def define_art_blocks(context):
 	context.art_blocks["Header"] = InteractiveBlock( (1, 2) , 0,
 		""".-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-.""")

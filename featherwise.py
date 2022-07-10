@@ -5,51 +5,6 @@ import runin
 import json
 from sheet_variables import *
 
-class Character:
-	def __init__(self):
-		self.name = ""
-		self.alignment = ""
-		self._class = ""
-
-		self.int = 0
-		self.str = 0
-		self.wis = 0
-		self.con = 0
-		self.dex = 0
-		self.cha = 0
-
-		self.xp = 0
-		self.money = 0
-
-		self.features = {}
-		self.skill_proficiencies = []
-
-class Item:
-	def __init__(self, name=None,description=None,weight=None,value=None, quantity=1):
-		self.name = name
-		self.description = description
-		self.weight = weight
-		self.value = value
-		self.quantity = quantity
-
-class Spell:
-	def __init__(self,
-		name=None,description=None,school=None,level=None,cast_time=None,
-		range=None,concentration=None,ritual=None,verbal=None,somatic=None,
-		material=None,duration=None,function=None):
-			self.name = name
-			self.description = description
-			self.school = school
-			self.level = level
-			self.cast_time = cast_time
-			self.range = range
-			self.concentration = concentration
-			self.ritual = ritual
-			self.verbal = verbal
-			self.somatic =somatic
-			self.material = material
-			self.duration = duration
-			self.function = function
 
 def change_char_name(context):
 	if not context.character: return
@@ -62,16 +17,11 @@ def change_char_name(context):
 def init(context):
 	context.character = Character()
 
-	with open('./char_state.json') as _file:
-		char_state = json.load(_file)
-
-	{	'eenie': eenie,
-		'laucian': laucian,
-		'runin': runin,		} [ char_state['alter'] ].init(context)
 
 	context.character.name = 'Prof. Featherwise'
-	context.character.alter = char_state['alter']
 	context.character._class =  'Wizard'
+	context.character.level = 1
+	context.character.prof = 2
 	context.character.hit_dice = 'd8'
 
 	context.character.saving_throws = ['INT', 'WIS']
@@ -177,27 +127,112 @@ def init(context):
 	}
 	context.feature_box_keys = []
 
-	# context.character.equipment['Spellbook'] = {
-	# 		'Description': ''
-	# 	}
-	# context.character.inventory += ['Book of Lore', 'Bottle of Ink', 'Ink Pen', '10 Sheets of Parchment', 'Little Bag of Sand', 'Small Knife']
-	# context.character.features_and_traits['Ritual Casting'] = '''You can cast a wizard spell as a ritual if that spell has the ritual tag and you have the spell in your spellbook. You don't need to have the spell prepared.'''
+	with open('./char_state.json') as _file:
+		context.character.owl = json.load(_file)['alter']
 
-		# First session
-	# context.character.xp += 225
-
-		# Second session
-		
-		# Third session
+	{	'eenie': eenie,
+		'laucian': laucian,
+		'runin': runin,		} [ context.character.owl ].init(context)
 
 
 def update(context):
 	if not context.character: return
 	context.art_blocks['Character Name'].var_array = [[10, 21, context.character.name]]
 	context.art_blocks['Character Name'].function = change_char_name
-	context.art_blocks['Class'].var_array += [[10, 54, 'Wizard']]
-	context.art_blocks['Level'].var_array += [[10, 63, '02']]
-	context.art_blocks['Proficiency Bonus'].var_array += [[17, 13, '+2']]
+	context.art_blocks['Class'].var_array += [[10, 54, context.character._class]]
+	context.art_blocks['Level'].var_array += [[10, 63, f'{context.character.level}']]
+	context.art_blocks['Proficiency Bonus'].var_array += [[17, 13, context.character.prof]]
+
+	context.art_blocks['STR'].var_array += [[ 16, 4, '08']]
+	context.art_blocks['STR'].var_array += [[ 17, 4, '-1']]
+
+	context.art_blocks['DEX'].var_array += [[ 21, 4, '14']]
+	context.art_blocks['DEX'].var_array += [[ 22, 4, '+2']]
+
+	context.art_blocks['CON'].var_array += [[ 26, 4, '14']]
+	context.art_blocks['CON'].var_array += [[ 27, 4, '+2']]
+
+	context.art_blocks['INT'].var_array += [[ 31, 4, '18']]
+	context.art_blocks['INT'].var_array += [[ 32, 4, '+4']]
+
+	context.art_blocks['WIS'].var_array += [[ 36, 4, '13']]
+	context.art_blocks['WIS'].var_array += [[ 37, 4, '+1']]
+
+	context.art_blocks['CHA'].var_array += [[ 41, 4, '12']]
+	context.art_blocks['CHA'].var_array += [[ 42, 4, '+1']]
+
+	context.art_blocks['Passive Perception'].var_array += [[ 47, 4, '11']]
+
+	context.art_blocks['Acrobatics'].var_array += [
+		[ 29, 12, '*' * ('Acrobatics' in context.character.skill_proficiencies)], 
+		[ 29, 35, '+2']]
+	context.art_blocks['Animal Handling'].var_array += [
+		[ 30, 12, '*' * ('Animal Handling' in context.character.skill_proficiencies)], 
+		[ 30, 35, '+1']]
+	context.art_blocks['Arcana'].var_array += [
+		[ 31, 12, '*' * ('Arcana' in context.character.skill_proficiencies)], 
+		[ 31, 35, '+6']]
+	context.art_blocks['Athletics'].var_array += [
+		[ 32, 12, '*' * ('Athletics' in context.character.skill_proficiencies)], 
+		[ 32, 35, '-1']]
+	context.art_blocks['Deception'].var_array += [
+		[ 33, 12, '*' * ('Deception' in context.character.skill_proficiencies)], 
+		[ 33, 35, '+1']]
+	context.art_blocks['History'].var_array += [
+		[ 34, 12, '*' * ('History' in context.character.skill_proficiencies)], 
+		[ 34, 35, '+4']]
+	context.art_blocks['Insight'].var_array += [
+		[ 35, 12, '*' * ('Insight' in context.character.skill_proficiencies)], 
+		[ 35, 35, '+1']]
+	context.art_blocks['Intimidation'].var_array += [
+		[ 36, 12, '*' * ('Intimidation' in context.character.skill_proficiencies)], 
+		[ 36, 35, '+1']]
+	context.art_blocks['Investigation'].var_array += [
+		[ 37, 12, '*' * ('Investigation' in context.character.skill_proficiencies)], 
+		[ 37, 35, '+6']]
+	context.art_blocks['Medicine'].var_array += [
+		[ 38, 12, '*' * ('Medicine' in context.character.skill_proficiencies)], 
+		[ 38, 35, '+1']]
+	context.art_blocks['Nature'].var_array += [
+		[ 39, 12, '*' * ('Nature' in context.character.skill_proficiencies)], 
+		[ 39, 35, '+4']]
+	context.art_blocks['Perception'].var_array += [
+		[ 40, 12, '*' * ('Perception' in context.character.skill_proficiencies)], 
+		[ 40, 35, '+1']]
+	context.art_blocks['Performance'].var_array += [
+		[ 41, 12, '*' * ('Performance' in context.character.skill_proficiencies)], 
+		[ 41, 35, '+1']]
+	context.art_blocks['Persuasion'].var_array += [
+		[ 42, 12, '*' * ('Persuasion' in context.character.skill_proficiencies)], 
+		[ 42, 35, '+1']]
+	context.art_blocks['Religion'].var_array += [
+		[ 43, 12, '*' * ('Religion' in context.character.skill_proficiencies)], 
+		[ 43, 35, '+4']]
+	context.art_blocks['Sleight of Hand'].var_array += [
+		[ 44, 12, '*' * ('Sleight of Hand' in context.character.skill_proficiencies)], 
+		[ 44, 35, '+2']]
+	context.art_blocks['Stealth'].var_array += [
+		[ 45, 12, '*' * ('Stealth' in context.character.skill_proficiencies)], 
+		[ 45, 35, '+2']]
+	context.art_blocks['Survival'].var_array += [
+		[ 46, 12, '*' * ('Survival' in context.character.skill_proficiencies)], 
+		[ 46, 35, '+1']]
+
+	context.art_blocks['Saving Throws'].var_array += [[ 22, 18, '-1']]
+	context.art_blocks['Saving Throws'].var_array += [[ 23, 18, '+2']]
+	context.art_blocks['Saving Throws'].var_array += [[ 24, 18, '+2']]
+	context.art_blocks['Saving Throws'].var_array += [[ 22, 30, '+6']]
+	context.art_blocks['Saving Throws'].var_array += [[ 23, 30, '+3']]
+	context.art_blocks['Saving Throws'].var_array += [[ 24, 30, '+1']]
+
+	context.art_blocks['Armour Class'].var_array += [[ 17, 46, '12']]
+	context.art_blocks['Initiative'].var_array += [[ 17, 59, '+2']]
+	context.art_blocks['Speed'].var_array += [[ 17, 73, '30']]
+	context.art_blocks['Hit Points'].var_array += [[ 21, 67, '16']]
+	context.art_blocks["Casting"].var_array += [[ 27, 47, '+4']]
+	context.art_blocks['Attack Roll'].var_array += [[ 27, 60, '+6']]
+	context.art_blocks['Spell Save DC'].var_array += [[ 27, 73, '14']]
+
 
 	for i in range(16):
 		headings = list(context.get_current_feature().keys())
@@ -206,3 +241,7 @@ def update(context):
 			context.art_blocks[f'Features Line {i}'].var_array = [[32+i,44,f'{headings[i]}']]
 		else:
 			context.art_blocks[f'Features Line {i}'].var_array = [[0,0,'']]
+
+	{	'eenie': eenie,
+		'laucian': laucian,
+		'runin': runin,		} [ context.character.owl ].update(context)
