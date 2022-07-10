@@ -24,7 +24,7 @@ def init(context):
 		school="Illusion",
 		level=0,
 		cast_time="1 action",
-		range="30",
+		range="30ft",
 		somatic=True,
 		material="a bit of fleece",
 		duration="1 minute")
