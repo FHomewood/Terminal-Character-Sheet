@@ -1,9 +1,10 @@
 import eenie
 import laucian
 import runin
+from sheet_variables import *
 
 import json
-from sheet_variables import *
+from numpy import floor
 
 
 def change_char_name(context):
@@ -143,8 +144,8 @@ def update(context):
 	context.art_blocks['Level'].var_array += [[10, 63, f'{context.character.level}']]
 	context.art_blocks['Proficiency Bonus'].var_array += [[17, 13, f'{context.character.prof}']]
 
-	context.art_blocks['STR'].var_array += [[ 16, 4, '08']]
-	context.art_blocks['STR'].var_array += [[ 17, 4, '-1']]
+	context.art_blocks['STR'].var_array += [[ 16, 4, f'{context.character.str:02}']]
+	context.art_blocks['STR'].var_array += [[ 17, 4, f'{(context.character.str_mod := int(floor((context.character.str-10)/2))):+2}']]
 
 	context.art_blocks['DEX'].var_array += [[ 21, 4, '14']]
 	context.art_blocks['DEX'].var_array += [[ 22, 4, '+2']]
