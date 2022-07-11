@@ -5,7 +5,10 @@ from sheet_variables import *
 
 import json
 from numpy import floor
+from pathlib import Path
 
+Json_path = Path(__file__).parent/"char_state.json"
+print(Json_path)
 
 def change_char_name(context):
 	if not context.character: return
@@ -51,7 +54,6 @@ def init(context):
 			},
 			"Class Features": {
 				"Arcane Recovery": '''You have learned to regain some of your magical energy by studying your spellbook. Once per day when you finish a short rest, you can choose expended spell slots to recover. The spell slots can have a combined level that is equal to or less than half your wizard level (rounded up), and none of the slots can be 6th level or higher.For example, if you’re a 4th-level wizard, you can recover up to two levels worth of spell slots. You can recover either a 2nd-level spell slot or two 1st-level spell slots.''',
-
 			}
 		},
 		"Spellbook":{
@@ -125,7 +127,7 @@ def init(context):
 	}
 	context.feature_box_keys = []
 
-	with open('./char_state.json') as _file:
+	with open(Json_path) as _file:
 		char_state = json.load(_file)
 
 	context.character.owl = char_state['alter']
@@ -142,7 +144,7 @@ def update(context):
 	if not context.character: return
 
 
-	with open('./char_state.json') as _file:
+	with open(Json_path) as _file:
 		char_state = json.load(_file)
 
 	context.character.owl = char_state['alter']
