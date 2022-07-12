@@ -8,7 +8,6 @@ from numpy import floor
 from pathlib import Path
 
 Json_path = Path(__file__).parent/"char_state.json"
-print(Json_path)
 
 def change_char_name(context):
 	if not context.character: return
@@ -64,61 +63,61 @@ def init(context):
 				"Quarterstaff": Item(
 					name="Quarterstaff",
 					description='''A simple melee weapon, grown from an ash tree this staff is a suitable accompaniment to any traveller. A one handed attack with this quarterstaff may deal 1d6 of bludgeoning damage or alternatively a two handed strike can deal 1d8 points of bludgeoning damage''',
-					weight="4 lbs",
+					weight=4,
 					value=20),
 				"Feathered Robes": Item(
 					name="Feathered Robes",
 					description='''Adventuring gear''',
-					weight="4 lbs",
+					weight=4,
 					value=100),
 				"Component Pouch": Item(
 					name="Component Pouch",
 					description='''A component pouch is a small, watertight leather belt pouch that has compartments to hold all the material components and other special items you need to cast your spells, except for those components that have a specific cost (as indicated in a spell's description).''',
-					weight="2 lbs",
+					weight=2,
 					value=2500),
 				"Scholar's Pack": Item(
 					name="Scholar's Pack",
 					description='''Includes a backpack, a book of lore (herbalism), a bottle of ink, an ink pen, 10 sheets of parchment, a little bag of sand, and a small knife.''',
-					weight="10 lbs",
+					weight=10,
 					value=40000),
 				"Spellbook": Item(
 					name="Spellbook",
 					description='''Essential for wizards, a spellbook is a leather-bound tome with 100 blank vellum pages suitable for recording spells.''',
-					weight="3 lbs",
+					weight=3,
 					value=5000)
 			},
 			"Backpack":{
 				"Book of Herbalism": Item(
 					name="Book of Herbalism",
-					description=""" """,
-					weight="5 lbs",
+					description="""A leatherbound journal of horticulture, the growth patterns and notable effects of a number of plants. The book displays common and uncommon foliage found around the Rotten Isles illustrated and described in detail.""",
+					weight=5,
 					value=2500),
 				"Bottle of ink": Item(
 					name="Bottle of ink",
-					description=""" """,
-					weight="",
-					value=0),
+					description="""Essential for any scribe, a one ounce glass bottle of black ink. Can be used for drafting notes and calculations, in the wrong hands can also be a forgers best friend.""",
+					weight = 0,
+					value=1000),
 				"Ink Pen": Item(
 					name="Ink Pen",
-					description=""" """,
-					weight="",
-					value=0),
+					description="""A quilled pen used by scholars and scribes to take notes""",
+					weight = 0,
+					value=2),
 				"Sheet of Parchment": Item(
 					name="Sheet of Parchment",
-					description=""" """,
-					weight="",
-					value=0,
+					description="""A sheet of thick, quality parchment can be bound into a book for """,
+					weight = 0,
+					value=10,
 					quantity = 10),
 				"A Little Bag of Sand": Item(
 					name="A Little Bag of Sand",
-					description=""" """,
-					weight="",
-					value=0),
+					description="""It's rough and it's coarse and it gets everywhere""",
+					weight = 0,
+					value=5),
 				"Small Knife": Item(
 					name="Small Knife",
-					description=""" """,
-					weight="",
-					value=0),
+					description="""A utility knife for when buttering bread with a great-axe feels like overkill""",
+					weight = 1,
+					value=50),
 			},
 			"Treasures":{
 
@@ -142,7 +141,6 @@ def init(context):
 
 def update(context):
 	if not context.character: return
-
 
 	with open(Json_path) as _file:
 		char_state = json.load(_file)
@@ -270,7 +268,7 @@ def update(context):
 	context.art_blocks['Armour Class'].var_array += [[ 17, 46, f'{context.character.armour_class:02}']]
 	context.art_blocks['Initiative'].var_array += [[ 17, 59, f'{context.character.dex_mod:+2}']]
 	context.art_blocks['Speed'].var_array += [[ 17, 73, f'{context.character.spd:02}']]
-	context.art_blocks['Hit Points'].var_array += [[ 21, 67, f'{context.character.hp}']]
+	context.art_blocks['Hit Points'].var_array += [[ 21, 67, f'{context.character.hp}/{context.character.max_hp}']]
 	context.art_blocks["Casting"].var_array += [[ 27, 47, f'{context.character.int_mod:+2}']]
 	context.art_blocks['Attack Roll'].var_array += [[ 27, 60, f'{context.character.int_mod + context.character.prof:+2}']]
 	context.art_blocks['Spell Save DC'].var_array += [[ 27, 73, f'{8 + context.character.int_mod + context.character.prof}']]
@@ -278,6 +276,9 @@ def update(context):
 	wealth_str = ''.join([f'{i} ' for i in str(context.character.wealth)])
 	context.art_blocks['Coin Pouch'].var_array = [[ 47, 69, f'{wealth_str:>10}']]
 
+	context.art_blocks['Casting'].function = roll(context,1,20,context.character.int_mod)
+	context.art_blocks['Attack Roll'].function = roll(context,1,20,context.character.int_mod+context.character.prof)
+	context.art_blocks['Initiative'].function = roll(context,1,20,context.character.dex_mod)
 
 	context.art_blocks["STR"].function = roll(context,1,20,context.character.str_mod)
 	context.art_blocks["DEX"].function = roll(context,1,20,context.character.dex_mod)

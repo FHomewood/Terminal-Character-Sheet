@@ -264,10 +264,6 @@ def define_art_blocks(context):
 |                                     ]
  '...................................'""")
 	context.art_blocks["Features Box"].scroll = 0
-	context.art_blocks["Coin Pouch"] = InteractiveBlock( (45, 66) , 6,
-		"""_.-----------<
-[    P G S C  
-[             """)
 
 	context.art_blocks["Features Line 0"] = InteractiveBlock( (32, 44) , 3,
 		"""___________________________________""")
@@ -333,6 +329,10 @@ def define_art_blocks(context):
 		"""______________________""")
 	context.art_blocks["Features Line 15"].function = feature_box_select(context,15)
 
+	context.art_blocks["Coin Pouch"] = InteractiveBlock( (45, 66) , 6,
+		"""_.-----------<
+[    P G S C  
+[             """)
 	context.art_blocks["Footer"] = InteractiveBlock( (50, 1) , 0,
 		"""'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'""")
 	context.art_blocks["Acrobatics"] = InteractiveBlock( (29, 11) , 6,
@@ -473,9 +473,25 @@ def feature_box_select(context, line_index):
 						popup_text +=f" {line}\n"
 					activate_popup(context,popup_text)
 				elif type(selected_attribute) == Item:
-					print(selected_attribute.value)
+					item = selected_attribute
+					popup_text = f""" 
+  {item.name} x{item.quantity}
+
+  {item.weight} lbs
+  {item.value} cp
+                ~~~~~~~~~~~~~~~~~
+ 
+"""
+					for line in neatify_string(context,item.description):
+						popup_text +=f" {line}\n"
+					activate_popup(context,popup_text)
 		if mouse_event(context) in ["Right Click", "Double Right Click"]:
 			context.feature_box_keys = context.feature_box_keys[:-1]
+		if mouse_event(context) == "Scroll Up":
+			context.art_blocks["Features Box"].scroll = max(0, context.art_blocks["Features Box"].scroll - 1)
+		if mouse_event(context) == "Scroll Down":
+			context.art_blocks["Features Box"].scroll += 1
+		update_features(context)
 
 	return func
 
