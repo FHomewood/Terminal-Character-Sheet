@@ -318,8 +318,10 @@ def update(context):
 	for i in range(16):
 		headings = list(context.get_current_feature().keys())
 
-		if len(headings) > i:
-			context.art_blocks[f'Features Line {i}'].var_array = [[32+i,44,f'{headings[i]}']]
+		scroll_offset = context.art_blocks["Features Box"].scroll
+
+		if len(headings) > i+scroll_offset:
+			context.art_blocks[f'Features Line {i}'].var_array = [[32+i,44,f'{headings[i+scroll_offset]}']]
 		else:
 			context.art_blocks[f'Features Line {i}'].var_array = [[0,0,'']]
 

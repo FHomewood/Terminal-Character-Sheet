@@ -441,9 +441,10 @@ def neatify_string(context,string, splitlen=48):
 def feature_box_select(context, line_index):
 	def func(context):
 		if mouse_event(context) == "Double Left Click":
+			scroll_offset = context.art_blocks["Features Box"].scroll
 			current_headings = list(context.get_current_feature().keys())
-			if line_index < len(current_headings):
-				selected_heading = list(context.get_current_feature().keys())[line_index]
+			if line_index < len(current_headings)-scroll_offset:
+				selected_heading = list(context.get_current_feature().keys())[line_index+scroll_offset]
 				selected_attribute = context.get_current_feature()[selected_heading]
 				if type(selected_attribute) == dict:
 					context.feature_box_keys.append(selected_heading)
@@ -495,6 +496,19 @@ def feature_box_select(context, line_index):
 
 	return func
 
+def update_features(context):
+	pass
+	# text = context.art_blocks["Popup"].text
+	# scroll_offset = context.art_blocks["Popup"].scroll
+	# temp_var_array = [[0,50,f'{scroll_offset}']]
+	# line_number = 0
+	# for paragraph in text.split('\n'):
+	# 	for chunk in [paragraph[i:i+49] for i in range(0,len(paragraph), 49)]:
+	# 		temp_var_array += [[line_number - scroll_offset + 20,16,chunk]]
+	# 		line_number+=1
+	# scroll_offset = min(len(temp_var_array),scroll_offset)
+	# context.art_blocks["Popup"].var_array = temp_var_array[scroll_offset+1:scroll_offset+20]
+	
 def roll(context,n,k,b):
 	def func(context):
 		if mouse_event(context) =="Double Left Click":
