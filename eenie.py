@@ -13,8 +13,7 @@ def init(context):
 
 	context.character.features["Features & Traits"]["Racial Traits"]["Darkvision"] = '''Accustomed to life underground, you have superior vision in dark and dim conditions. You can see in dim light within 60 feet of you as if it were bright light, and in darkness as if it were dim light. You can't discern color in darkness, only shades of gray.'''
 	context.character.features["Features & Traits"]["Racial Traits"]["Gnome Cunning"] = '''You have advantage on all Intelligence, Wisdom, and Charisma saving throws against magic.'''
-	context.character.features["Proficiencies"]["Languages"]["Common"] = None
-	context.character.features["Proficiencies"]["Languages"]["Gnomish"] = None
+	context.character.features["Proficiencies"]["Languages"]["Gnomish"] = """The Gnomish language, which uses the Dwarvish script, is renowned for its technical treatises and its catalogs of knowledge about the natural world."""
 
 	context.character.subrace = "Forest Gnome"
 	context.character.dex += 1

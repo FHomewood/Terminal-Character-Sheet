@@ -16,15 +16,36 @@ def init(context):
 	context.character.features["Features & Traits"]["Racial Traits"]["Fey Ancestry"] = '''You have advantage on saving throws against being charmed, and magic can’t put you to sleep.'''
 	context.character.features["Features & Traits"]["Racial Traits"]["Trance"] = '''Elves don’t need to sleep. Instead, they meditate deeply, remaining semiconscious, for 4 hours a day. (The Common word for such meditation is “trance.”) While meditating, you can dream after a fashion; such dreams are actually mental exercises that have become reflexive through years of practice. After resting in this way, you gain the same benefit that a human does from 8 hours of sleep.'''
 	context.character.skill_proficiencies += ["Perception", "Insight"]
-	context.character.features["Proficiencies"]["Languages"]["Common"] = None
-	context.character.features["Proficiencies"]["Languages"]["Elvish"] = None
-	context.character.features["Proficiencies"]["Languages"]["Dwarvish"] = None
+	context.character.features["Proficiencies"]["Languages"]["Elvish"] = "Elvish is fluid, with subtle intonations and intricate grammar. Elven literature is rich and varied, and their songs and poems are famous among other races. Many bards learn their language so they can add Elvish ballads to their repertoires."
+	context.character.features["Proficiencies"]["Languages"]["Dwarvish"] = "Dwarvish is full of hard consonants and guttural sounds, and those characteristics spill over into whatever other language a dwarf might speak."
 
 	context.character.max_hp += 6 + 2
 	context.character.background = "Orphan Loner"
 	context.character.skill_proficiencies += ["Persuasion", "Investigation"]
-	context.character.features["Proficiencies"]["Tools"]["Poisoners Kit"] = None
-	context.character.features["Proficiencies"]["Languages"]["Draconic"] = None
+	context.character.features["Proficiencies"]["Tools"]["Poisoners Kit"] = """A poisoner's kit includes the vials, chemicals, and other equipment necessary for the creation of poisons. Proficiency with this kit lets you add your proficiency bonus to any ability checks you make to craft or use poisons.
+
+Additionally, the Crafting and Harvesting Poison rules require the use of a poisoner's kit.
+
+A poisoner's kit is a favored resource for thieves, assassins, and others who engage in skulduggery. It allows you to apply poisons and create them from various materials. Your knowledge of poisons also helps you treat them.
+Components.
+
+A poisoner's kit includes glass vials, a mortar and pestle, chemicals, and a glass stirring rod.
+History.
+
+Your training with poisons can help you when you try to recall facts about infamous poisonings.
+Investigation, Perception.
+
+Your knowledge of poisons has taught you to handle those substances carefully, giving you an edge when you inspect poisoned objects or try to extract clues from events that involve poison.
+Medicine.
+
+When you treat the victim of a poison, your knowledge grants you added insight into how to provide the best care to your patient.
+Nature, Survival.
+
+Working with poisons enables you to acquire lore about which plants and animals are poisonous.
+Handle Poison.
+
+Your proficiency allows you to handle and apply a poison without risk of exposing yourself to its effects."""
+	context.character.features["Proficiencies"]["Languages"]["Draconic"] = """Draconic is thought to be one of the oldest languages and is often used in the study of magic. The language sounds harsh to most other creatures and includes numerous hard consonants and sibilants."""
 
 	context.character.features["Spellbook"]['Toll the Dead'] = Spell(
 		name='Toll the Dead',

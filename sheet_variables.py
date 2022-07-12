@@ -515,7 +515,7 @@ def popup_function(context):
 	if "Scroll Up" in mouse_event(context):
 		context.art_blocks["Popup"].scroll = max(0,context.art_blocks["Popup"].scroll - 1)
 	if "Scroll Down" in mouse_event(context):
-		context.art_blocks["Popup"].scroll += 1
+		context.art_blocks["Popup"].scroll = min(len(context.art_blocks["Popup"].text.split("\n"))-3, context.art_blocks["Popup"].scroll + 1)
 	update_popup(context)
 
 def activate_popup(context, text=None):

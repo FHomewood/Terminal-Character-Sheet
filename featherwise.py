@@ -33,98 +33,87 @@ def init(context):
 	context.character.features = \
 	{
 		"Proficiencies":{
-			"Weapons":{
-				"Dagger": None,
-				"Dart": None,
-				"Sling": None,
-				"Quarterstaff": None,
-				"Light Crossbow": None
-			},
-			"Tools":{
-
-			},
-			"Languages":{
-
-			}
+			"Weapons":{ },
+			"Tools":{ },
+			"Languages":{ }
 		},
 		"Features & Traits":{
-			"Racial Traits": {
-
-			},
-			"Class Features": {
-				"Arcane Recovery": '''You have learned to regain some of your magical energy by studying your spellbook. Once per day when you finish a short rest, you can choose expended spell slots to recover. The spell slots can have a combined level that is equal to or less than half your wizard level (rounded up), and none of the slots can be 6th level or higher.For example, if you’re a 4th-level wizard, you can recover up to two levels worth of spell slots. You can recover either a 2nd-level spell slot or two 1st-level spell slots.''',
-			}
-		},
-		"Spellbook":{
-
+			"Racial Traits": { },
+			"Class Features": { }
 		},
 		"Inventory":{
-			"Equipment":{
-				"Quarterstaff": Item(
+			"Equipment":{ },
+			"Backpack":{ },
+			"Treasures":{ }
+		},
+		"Spellbook":{ }
+	}
+
+	context.character.features["Proficiencies"]["Weapons"]["Daggers"] = """Light weapons capable of being thrown, ideal for use in utility or in combat situations. Getting in close contact with an enemy should be a mage's last resort. However, having something sharp makes it a much more survivable scenario."""
+	context.character.features["Proficiencies"]["Weapons"]["Darts"] = """A simple ranged weapon with finesse. With the right skill a well placed dart can finish off a wounded foe or distract a brute. Though you should likely steer clear of attracting too much attention."""
+	context.character.features["Proficiencies"]["Weapons"]["Slings"] = """Slings are simple ranged weapons that propel pellet ammunition towards their target. Dangerous at a distance these weapons aren't usually recommended in close quarters."""
+	context.character.features["Proficiencies"]["Weapons"]["Quarterstaffs"] = """A mage's familiar staff. Useful in keeping one foot in front of the other as well as packing a punch in combat. Never underestimate the danger these pose by a skilled user."""
+	context.character.features["Proficiencies"]["Weapons"]["Light Crossbows"] = """Light crossbows are often weildable in an offhand making them a deadly accompaniment while you cast spells with your free hand. Your foes will rarely expect a bolt coming from your direction."""
+	context.character.features["Features & Traits"]["Class Features"]["Arcane Recovery"] = '''You have learned to regain some of your magical energy by studying your spellbook. Once per day when you finish a short rest, you can choose expended spell slots to recover. The spell slots can have a combined level that is equal to or less than half your wizard level (rounded up), and none of the slots can be 6th level or higher.For example, if you’re a 4th-level wizard, you can recover up to two levels worth of spell slots. You can recover either a 2nd-level spell slot or two 1st-level spell slots.'''
+	context.character.features["Inventory"]["Equipment"]["Quarterstaff"] = Item(
 					name="Quarterstaff",
 					description='''A simple melee weapon, grown from an ash tree this staff is a suitable accompaniment to any traveller. A one handed attack with this quarterstaff may deal 1d6 of bludgeoning damage or alternatively a two handed strike can deal 1d8 points of bludgeoning damage''',
 					weight=4,
-					value=20),
-				"Feathered Robes": Item(
+					value=20)
+	context.character.features["Inventory"]["Equipment"]["Feathered Robes"] = Item(
 					name="Feathered Robes",
 					description='''Adventuring gear''',
 					weight=4,
-					value=100),
-				"Component Pouch": Item(
+					value=100)
+	context.character.features["Inventory"]["Equipment"]["Component Pouch"] = Item(
 					name="Component Pouch",
 					description='''A component pouch is a small, watertight leather belt pouch that has compartments to hold all the material components and other special items you need to cast your spells, except for those components that have a specific cost (as indicated in a spell's description).''',
 					weight=2,
-					value=2500),
-				"Scholar's Pack": Item(
+					value=2500)
+	context.character.features["Inventory"]["Equipment"]["Scholar's Pack"] = Item(
 					name="Scholar's Pack",
 					description='''Includes a backpack, a book of lore (herbalism), a bottle of ink, an ink pen, 10 sheets of parchment, a little bag of sand, and a small knife.''',
 					weight=10,
-					value=40000),
-				"Spellbook": Item(
+					value=40000)
+	context.character.features["Inventory"]["Equipment"]["Spellbook"] = Item(
 					name="Spellbook",
 					description='''Essential for wizards, a spellbook is a leather-bound tome with 100 blank vellum pages suitable for recording spells.''',
 					weight=3,
 					value=5000)
-			},
-			"Backpack":{
-				"Book of Herbalism": Item(
+	context.character.features["Inventory"]["Backpack"]["Book of Herbalism"] = Item(
 					name="Book of Herbalism",
 					description="""A leatherbound journal of horticulture, the growth patterns and notable effects of a number of plants. The book displays common and uncommon foliage found around the Rotten Isles illustrated and described in detail.""",
 					weight=5,
-					value=2500),
-				"Bottle of ink": Item(
+					value=2500)
+	context.character.features["Inventory"]["Backpack"]["Bottle of ink"] = Item(
 					name="Bottle of ink",
 					description="""Essential for any scribe, a one ounce glass bottle of black ink. Can be used for drafting notes and calculations, in the wrong hands can also be a forgers best friend.""",
 					weight = 0,
-					value=1000),
-				"Ink Pen": Item(
+					value=1000)
+	context.character.features["Inventory"]["Backpack"]["Ink Pen"] = Item(
 					name="Ink Pen",
 					description="""A quilled pen used by scholars and scribes to take notes""",
 					weight = 0,
-					value=2),
-				"Sheet of Parchment": Item(
+					value=2)
+	context.character.features["Inventory"]["Backpack"]["Sheet of Parchment"] = Item(
 					name="Sheet of Parchment",
 					description="""A sheet of thick, quality parchment can be bound into a book for """,
 					weight = 0,
 					value=10,
-					quantity = 10),
-				"A Little Bag of Sand": Item(
+					quantity = 10)
+	context.character.features["Inventory"]["Backpack"]["A Little Bag of Sand"] = Item(
 					name="A Little Bag of Sand",
 					description="""It's rough and it's coarse and it gets everywhere""",
 					weight = 0,
-					value=5),
-				"Small Knife": Item(
+					value=5)
+	context.character.features["Inventory"]["Backpack"]["Small Knife"] = Item(
 					name="Small Knife",
 					description="""A utility knife for when buttering bread with a great-axe feels like overkill""",
 					weight = 1,
-					value=50),
-			},
-			"Treasures":{
+					value=50)
+	context.character.features["Proficiencies"]["Languages"]["Common"] = '''The lingua franca accross all races. The origins of the common tongue is not known, but it enables vast diplomacy across diverse kingdoms.'''
 
-			}
-		}
-	}
-	context.feature_box_keys = []
+
 
 	with open(Json_path) as _file:
 		char_state = json.load(_file)
@@ -317,7 +306,11 @@ def update(context):
 
 	for i in range(16):
 		headings = list(context.get_current_feature().keys())
-
+		if context.feature_box_keys == []:
+			title_text = "~ Features ~"
+		else: 
+			title_text = f'~ {context.feature_box_keys[-1]} ~'
+		context.art_blocks["Features Box"].var_array = [[31,61-len(title_text)//2,title_text]]
 		scroll_offset = context.art_blocks["Features Box"].scroll
 
 		if len(headings) > i+scroll_offset:

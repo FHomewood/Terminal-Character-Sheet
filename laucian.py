@@ -14,8 +14,7 @@ def init(context):
 	context.character.features["Features & Traits"]["Racial Traits"]["Fey Ancestry"] = '''Elves don’t need to sleep. Instead, they meditate deeply, remaining semiconscious, for 4 hours a day. (The Common word for such meditation is “trance.”) While meditating, you can dream after a fashion; such dreams are actually mental exercises that have become reflexive through years of practice. After resting in this way, you gain the same benefit that a human does from 8 hours of sleep.'''
 	context.character.features["Features & Traits"]["Racial Traits"]["Trance"] = '''Elves don’t need to sleep. Instead, they meditate deeply, remaining semiconscious, for 4 hours a day. (The Common word for such meditation is “trance.”) While meditating, you can dream after a fashion; such dreams are actually mental exercises that have become reflexive through years of practice. After resting in this way, you gain the same benefit that a human does from 8 hours of sleep.'''
 	context.character.skill_proficiencies += ['Perception']
-	context.character.features["Proficiencies"]["Languages"]["Common"] = None
-	context.character.features["Proficiencies"]["Languages"]["Elvish"] = None
+	context.character.features["Proficiencies"]["Languages"]["Elvish"] = """Elvish is fluid, with subtle intonations and intricate grammar. Elven literature is rich and varied, and their songs and poems are famous among other races. Many bards learn their language so they can add Elvish ballads to their repertoires."""
 
 	context.character.subrace = "High Elf"
 	context.character.int += 1
@@ -35,14 +34,38 @@ The hand can't attack, activate magic items, or carry more than 10 pounds.''',
 		verbal=True,
 		somatic=True,
 		duration="1 minute")
-	context.character.features["Proficiencies"]["Languages"]["Orcish"] = None
+	context.character.features["Proficiencies"]["Languages"]["Orc"] = """Orc is a harsh, grating language with hard consonants. It has no script of its own but is written in the Dwarvish script."""
 
 	context.character.max_hp += 6 + 3
 
 	context.character.background = "Reclusive Herbalist"
 	context.character.skill_proficiencies += ["Medicine", "Nature"]
-	context.character.features["Proficiencies"]["Tools"]["Herbalism Kit"] = None
-	context.character.features["Proficiencies"]["Tools"]["Lyre"] = None
+	context.character.features["Proficiencies"]["Tools"]["Herbalism Kit"] = """This kit contains a variety of instruments such as clippers, mortar and pestle, and pouches and vials used by herbalists to create remedies and potions. Proficiency with this kit lets you add your proficiency bonus to any ability checks you make to identify or apply herbs. Also, proficiency with this kit is required to create antitoxin and potions of healing.
+
+Proficiency with an herbalism kit allows you to identify plants and safely collect their useful elements.
+Components.
+
+An herbalism kit includes pouches to store herbs, clippers and leather gloves for collecting plants, a mortar and pestle, and several glass jars.
+Arcana.
+
+Your knowledge of the nature and uses of herbs can add insight to your magical studies that deal with plants and your attempts to identify potions.
+Investigation.
+
+When you inspect an area overgrown with plants, your proficiency can help you pick out details and clues that others might miss.
+Medicine.
+
+Your mastery of herbalism improves your ability to treat illnesses and wounds by augmenting your methods of care with medicinal plants.
+Nature and Survival.
+
+When you travel in the wild, your skill in herbalism makes it easier to identify plants and spot sources of food that others might overlook.
+Identify Plants.
+
+You can identify most plants with a quick inspection of their appearance and smell."""
+	context.character.features["Proficiencies"]["Tools"]["Lyre"] = """If you have proficiency with a given musical instrument, you can add your proficiency bonus to any ability checks you make to play music with the instrument.
+
+A bard can use a musical instrument as a spellcasting focus, substituting it for any material component that does not list a cost.
+
+Each type of musical instrument requires a separate proficiency."""
 
 	context.character.features["Spellbook"]['Light'] = Spell(
 		name='Light',
