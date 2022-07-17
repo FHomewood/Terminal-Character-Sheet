@@ -1,6 +1,7 @@
 import curses
+from pathlib import Path
 
-import featherwise as player_character
+import characters.featherwise.featherwise as player_character
 from sheet_variables import *
 
 class Context:
@@ -63,6 +64,11 @@ def end(context):
 if __name__ == "__main__":
 	context = Context()
 	init(context)
+
+	path = Path(__file__).parent
+	character_paths = [character_module for character_module in path.glob('characters/*/*.py')]
+	for character in character_paths:
+		print(f"import characters.{character.parent.name}.{character.name} as player_character")
 	player_character.init(context)
 	while True:
 		update(context)
