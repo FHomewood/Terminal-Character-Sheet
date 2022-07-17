@@ -1,6 +1,6 @@
-import characters.featherwise.owls.eenie
-import characters.featherwise.owls.laucian
-import characters.featherwise.owls.runin
+import characters.featherwise.owls.eenie as eenie
+import characters.featherwise.owls.laucian as laucian
+import characters.featherwise.owls.runin as runin
 from sheet_variables import *
 
 import json
