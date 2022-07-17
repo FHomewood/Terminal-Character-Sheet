@@ -1,12 +1,12 @@
 import curses
 from pathlib import Path
 
-import characters.featherwise.featherwise as player_character
 from sheet_variables import *
 
 class Context:
 	def __init__(self):
 		self.stdscr = None
+		self.screen_state = "character_select"
 		self.art_blocks = {}
 		self.mouse_state = (0,0,0,0,0)
 		self.character = None
@@ -39,6 +39,30 @@ def init(context):
 
 	define_art_blocks(context)
 
+	path = Path(__file__).parent
+	character_paths = [character_module for character_module in path.glob('characters/*/*.py')]
+
+	activate_popup(context,"")
+	for index, character in enumerate(character_paths):
+		context.art_blocks[f"select_{character.parent.name}"] = InteractiveBlock( (23 + 2 * index, 21), 4, f"{character.parent.name}")
+		context.art_blocks[f"select_{character.parent.name}"].function = import_char(context,character)
+
+def import_char(context,char_path):
+	def func(context):
+		if mouse_event(context) =="Double Left Click":
+			context.character_module = __import__(f"characters.{char_path.parent.name}.{char_path.stem}", globals(), locals(), ["init", "update","end"], 0)
+			for key, block in context.art_blocks.items():
+				if key.startswith("select_"):
+					block.render = False
+					block.active = False
+				if block.render: block.active = True
+			context.mouse_state = (0,0,0,0,0)
+			context.art_blocks["Popup"].render = False
+			context.art_blocks["Popup"].active = False
+
+			context.character_module.init(context)
+	return func
+
 
 def update(context):
 	context.stdscr.clear()
@@ -50,10 +74,12 @@ def update(context):
 		   block.function:
 			block.function(context)
 
+
 def draw(context):
 	for identifier, block in context.art_blocks.items():
 		block.draw(context)
 	context.stdscr.addstr(0,0,str(f"y:{context.mouse_state[2]}, x:{context.mouse_state[1]} || {mouse_event(context)}"))
+
 
 def end(context):
 	curses.nocbreak()
@@ -64,15 +90,9 @@ def end(context):
 if __name__ == "__main__":
 	context = Context()
 	init(context)
-
-	path = Path(__file__).parent
-	character_paths = [character_module for character_module in path.glob('characters/*/*.py')]
-	for character in character_paths:
-		print(f"import characters.{character.parent.name}.{character.name} as player_character")
-	player_character.init(context)
 	while True:
 		update(context)
-		player_character.update(context)
+		if context.character: context.character_module.update(context)
 		draw(context)
 		context.stdscr.refresh()
 

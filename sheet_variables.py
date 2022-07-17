@@ -506,7 +506,7 @@ def roll(context,n,k,b):
 	return func
 
 def popup_function(context):
-	if "Right" in mouse_event(context):
+	if "Right" in mouse_event(context) and context.character:
 		for index, block in context.art_blocks.items():
 			if block.render: block.active = True
 		context.mouse_state = (0,0,0,0,0)

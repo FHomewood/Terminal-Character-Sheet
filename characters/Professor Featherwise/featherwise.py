@@ -1,6 +1,3 @@
-import characters.featherwise.owls.eenie as eenie
-import characters.featherwise.owls.laucian as laucian
-import characters.featherwise.owls.runin as runin
 from sheet_variables import *
 
 import json
@@ -19,13 +16,18 @@ def change_char_name(context):
 
 def init(context):
 	context.character = Character()
+	path = Path(__file__).parent
+	context.character.owls = {}
+	for owl in [character_module for character_module in path.glob('owls/*.py')]:
+		context.character.owls[f'{owl.stem}'] = __import__(f"{owl.parent.parent.parent.stem}.{owl.parent.parent.stem}.{owl.parent.stem}.{owl.stem}", globals(), locals(), ['init','update','exit'],0)
+
 
 
 	context.character.name = 'Prof. Featherwise'
 	context.character._class =  'Wizard'
 	context.character.level = 1
 	context.character.prof = 2
-	context.character.hit_dice = 'd8'
+	context.character.hit_dice = 'd6'
 
 	context.character.saving_throws = ['INT', 'WIS']
 	context.character.skill_proficiencies += ['Arcana', 'Investigation']
@@ -123,9 +125,7 @@ def init(context):
 	context.character.temp_hp = char_state['temp_health']
 	context.character.wealth = char_state['coins']
 
-	{	'eenie': eenie,
-		'laucian': laucian,
-		'runin': runin,		} [ context.character.owl ].init(context)
+	context.character.owls[context.character.owl].init(context)
 
 
 def update(context):
@@ -171,7 +171,7 @@ def update(context):
 	context.art_blocks['CHA'].var_array += [[ 42, 4, f'{context.character.cha_mod:+2}']]
 
 
-	context.art_blocks['Passive Perception'].var_array += [[ 47, 4, '11']]
+	context.art_blocks['Passive Perception'].var_array += [[ 47, 4, f'{10 + ("Perception" in context.character.skill_proficiencies) * context.character.prof + context.character.wis_mod:02}']]
 
 	context.art_blocks['Acrobatics'].var_array += [
 		[ 29, 12, '*' * ('Acrobatics' in context.character.skill_proficiencies)], 
@@ -318,6 +318,4 @@ def update(context):
 		else:
 			context.art_blocks[f'Features Line {i}'].var_array = [[0,0,'']]
 
-	{	'eenie': eenie,
-		'laucian': laucian,
-		'runin': runin,		} [ context.character.owl ].update(context)
+		context.character.owls[context.character.owl].update(context)
