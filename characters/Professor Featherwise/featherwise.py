@@ -305,7 +305,10 @@ def update(context):
 	context.art_blocks["Icosahedron"].function = roll(context,1,20,0)
 
 	for i in range(16):
-		headings = list(context.get_current_feature().keys())
+		current_feature = context.character.features
+		for key in context.feature_box_keys:
+			current_feature = current_feature[key]
+		headings = list(current_feature.keys())
 		if context.feature_box_keys == []:
 			title_text = "~ Features ~"
 		else: 
@@ -313,7 +316,7 @@ def update(context):
 		context.art_blocks["Features Box"].var_array = [[31,61-len(title_text)//2,title_text]]
 		scroll_offset = context.art_blocks["Features Box"].scroll
 
-		if len(headings) > i+scroll_offset:
+		if len(headings) > i + scroll_offset:
 			context.art_blocks[f'Features Line {i}'].var_array = [[32+i,44,f'{headings[i+scroll_offset]}']]
 		else:
 			context.art_blocks[f'Features Line {i}'].var_array = [[0,0,'']]

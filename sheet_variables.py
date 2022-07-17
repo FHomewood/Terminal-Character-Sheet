@@ -440,13 +440,18 @@ def neatify_string(context,string, splitlen=48):
 
 def feature_box_select(context, line_index):
 	def func(context):
-		current_headings = list(context.get_current_feature().keys())
+		
+		current_feature = context.character.features
+		for i in context.feature_box_keys:
+			current_feature = current_feature[i]
+
+		current_headings = list(current_feature.keys())
 		scroll_offset = context.art_blocks["Features Box"].scroll
 		if mouse_event(context) == "Double Left Click":
 
 			if line_index < len(current_headings)-scroll_offset:
-				selected_heading = list(context.get_current_feature().keys())[line_index+scroll_offset]
-				selected_attribute = context.get_current_feature()[selected_heading]
+				selected_heading = list(current_feature.keys())[line_index+scroll_offset]
+				selected_attribute = current_feature[selected_heading]
 				if type(selected_attribute) == dict:
 					context.feature_box_keys.append(selected_heading)
 					context.art_blocks["Features Box"].scroll = 0

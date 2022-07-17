@@ -12,13 +12,6 @@ class Context:
 		self.character = None
 		self.feature_box_keys = []
 
-	def get_current_feature(self):
-		current_dict = self.character.features
-		for i in self.feature_box_keys:
-			current_dict = current_dict[i]
-		return current_dict
-
-
 def init(context):
 
 	context.stdscr = curses.initscr()

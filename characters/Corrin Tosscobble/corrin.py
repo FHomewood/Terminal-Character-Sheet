@@ -221,7 +221,10 @@ def update(context):
 	context.art_blocks["Icosahedron"].function = roll(context,1,20,0)
 
 	for i in range(16):
-		headings = list(context.get_current_feature().keys())
+		current_feature = context.character.features
+		for key in context.feature_box_keys:
+			current_feature = current_feature[key]
+		headings = list(current_feature.keys())
 		if context.feature_box_keys == []:
 			title_text = "~ Features ~"
 		else: 
