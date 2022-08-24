@@ -3,6 +3,7 @@ from pathlib import Path
 
 from TerminalCharacterSheet import *
 
+
 class Context:
     def __init__(self):
         self.stdscr = None
@@ -24,17 +25,20 @@ class Character:
         init(self.context)
         if self.init: self.init()
         while True:
-            update(self.context)
-            if self.update: self.update()
-            draw(self.context)
-            self.context.stdscr.refresh()
+            try:
+                update(self.context)
+                if self.update: self.update()
+                draw(self.context)
+                self.context.stdscr.refresh()
 
-            key = self.context.stdscr.getch()
-            if key == ord('q'):
+                key = self.context.stdscr.getch()
+                if key == ord('q'):
+                    break
+            except:
                 break
-
         end(self.context)
         if self.end: self.end()
+
 
 def initialize_curses(context):
     context.stdscr = curses.initscr()
@@ -53,29 +57,31 @@ def initialize_curses(context):
     curses.init_pair(5, curses.COLOR_MAGENTA, curses.COLOR_BLACK)
     curses.init_pair(6, curses.COLOR_YELLOW, curses.COLOR_BLACK)
 
+
 def init(context):
     initialize_curses(context)
 
-    define_modules()
+    define_modules(context)
 
     activate_popup(context, "")
 
+
 def update(context):
     context.stdscr.clear()
-    get_mouse()
+    get_mouse(context)
 
-    for identifier, block in config.modules.items():
-        if block.mouse_in_block() and \
+    for identifier, block in context.modules.items():
+        if block.mouse_in_block(context) and \
                 block.active and \
                 block.function:
             block.function()
 
 
 def draw(context):
-    for identifier, block in config.modules.items():
-        block.draw()
+    for identifier, block in context.modules.items():
+        block.draw(context)
     context.stdscr.addstr(0, 0,
-                          str(f"y:{context.mouse_state[2]}, x:{context.mouse_state[1]} || {mouse_event()}"))
+                          str(f"y:{context.mouse_state[2]}, x:{context.mouse_state[1]} || {mouse_event(context)}"))
 
 
 def end(context):
