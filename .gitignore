@@ -1,3 +1,4 @@
 /.idea/
 **.lock
+**.log
 **/__pycache__/
