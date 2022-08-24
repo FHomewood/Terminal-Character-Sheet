@@ -551,6 +551,7 @@ def update_popup(context):
 
 def get_mouse(context):
 	return
+
 	old_mouse_state = list(context.mouse_state)
 	new_mouse_state = list(curses.getmouse())
 
@@ -561,8 +562,7 @@ def get_mouse(context):
 
 def mouse_event(context):
 	code = context.mouse_state[-1]
-	try:
-		return {
+	return {
 		0: 'None',
 		1: 'Left Button Release',
 		2: 'Left Button Press',
@@ -578,6 +578,4 @@ def mouse_event(context):
 		8192: 'Double Right Click',
 		65536: 'Scroll Up',
 		2097152: 'Scroll Down',
-	}[code]
-	except:
-		return str(code)
+	}.get(code, str(code))

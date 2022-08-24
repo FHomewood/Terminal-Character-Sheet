@@ -19,17 +19,24 @@ class Context:
 class Character:
     def __init__(self, init=None, update=None, end=None):
         self.context = Context()
-        self.init = init
-        self.update = update
-        self.end = end
+        self.init = []
+        if init: self.init.append(init)
+
+        self.update = []
+        if update: self.update.append(update)
+
+        self.end = []
+        if end: self.end.append(end)
 
     def Display(self):
         try:
             init(self.context)
-            if self.init: self.init()
+            for function in self.init:
+                function(self.context)
             while True:
                 update(self.context)
-                if self.update: self.update()
+                for function in self.update:
+                    function(self.context)
                 draw(self.context)
                 self.context.stdscr.refresh()
 
@@ -38,7 +45,26 @@ class Character:
                     break
         finally:
             end(self.context)
-            if self.end: self.end()
+            for function in self.end:
+                function(self.context)
+
+    def add_function(self, function, trigger):
+        if trigger == "before": self.add_init(function)
+        elif trigger == "during": self.add_update(function)
+        elif trigger == "after": self.add_end(function)
+        else: self.context.util.log(
+            f"""Function call to Character.add_function() with invalid trigger provided
+TRIGGER PROVIDED: "{trigger}" """
+        )
+
+    def add_init(self, function):
+        self.init.append(function)
+
+    def add_update(self, function):
+        self.update.append(function)
+
+    def add_end(self, function):
+        self.end.append(function)
 
 
 def initialize_curses(context):
