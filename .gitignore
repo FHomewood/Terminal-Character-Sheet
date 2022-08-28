@@ -1,4 +1,5 @@
-/.idea/
+**debug**
+**/__pycache__/
+**/.idea/
 **.lock
 **.log
-**/__pycache__/

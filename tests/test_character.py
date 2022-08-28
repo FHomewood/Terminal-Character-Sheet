@@ -3,7 +3,7 @@ from unittest import mock
 import pytest
 
 
-def test_package_initialization_has_necessary_attributes():
+def test_character_initialization_has_necessary_attributes():
     corrin_tosscobble = tcs.Character()
 
     assert hasattr(corrin_tosscobble, 'context')
@@ -18,9 +18,14 @@ def test_custom_character_init_function_stored_correctly():
 
     corrin_tosscobble = tcs.Character(init=init)
 
-    corrin_tosscobble.init(corrin_tosscobble.context)
+    for function in corrin_tosscobble.init:
+        function(corrin_tosscobble.context)
 
-    assert corrin_tosscobble.context.test_attribute == "test_attribute"
+    actual = corrin_tosscobble.context.test_attribute
+
+    expected = "test_attribute"
+
+    assert actual == expected
 
 
 def test_custom_character_update_function_stored_correctly():
@@ -30,9 +35,14 @@ def test_custom_character_update_function_stored_correctly():
 
     corrin_tosscobble = tcs.Character(update=update)
 
-    corrin_tosscobble.update(corrin_tosscobble.context)
+    for function in corrin_tosscobble.update:
+        function(corrin_tosscobble.context)
 
-    assert corrin_tosscobble.context.test_attribute == "test_attribute"
+    actual = corrin_tosscobble.context.test_attribute
+
+    expected = "test_attribute"
+
+    assert actual == expected
 
 
 def test_custom_character_end_function_stored_correctly():
@@ -41,6 +51,11 @@ def test_custom_character_end_function_stored_correctly():
 
     corrin_tosscobble = tcs.Character(end=end)
 
-    corrin_tosscobble.end(corrin_tosscobble.context)
+    for function in corrin_tosscobble.end:
+        function(corrin_tosscobble.context)
 
-    assert corrin_tosscobble.context.test_attribute == "test_attribute"
+    actual = corrin_tosscobble.context.test_attribute
+
+    expected = "test_attribute"
+
+    assert actual == expected
