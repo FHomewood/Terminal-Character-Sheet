@@ -122,7 +122,7 @@ def update(context):
         if block.mouse_in_block(context) and \
                 block.active and \
                 block.function:
-            block.function()
+            block.function(context)
 
 
 def draw(context):

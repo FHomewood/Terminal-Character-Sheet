@@ -538,7 +538,6 @@ def update_popup(context):
 
 
 def get_mouse(context):
-    return
     old_mouse_state = list(context.mouse_state)
     new_mouse_state = list(curses.getmouse())
     for attribute in range(len(new_mouse_state)):
