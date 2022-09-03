@@ -6,7 +6,7 @@ from TerminalCharacterSheet.logger import LoggingUtil
 
 
 class Context:
-    def __init__(self, character):
+    def __init__(self, character=None):
         self.stdscr = None
         self.character = character
         self.mouse_available = False
@@ -52,7 +52,7 @@ class Character:
                     break
 
         except Exception as e:
-            self.context.util.log(f'An exception occurred: {e}')
+            self.context.util.log(f'An exception occurred: {e}', 'ERROR')
         finally:
             end(self.context)
             for function in self.end:
@@ -83,6 +83,9 @@ TRIGGER PROVIDED: "{trigger}" """
     def add_string(self, key, string, loc=(0, 0)):
         module = self.context.modules[key]
         module.var_array.append([module.pos[0] + loc[1], module.pos[1] + loc[0], str(string)])
+
+    def add_module(self):
+        pass
 
     def enable_dynamic_features(self):
         self.add_update(features_box_update)
