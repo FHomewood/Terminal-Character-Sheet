@@ -1,7 +1,8 @@
 [[Deception]]
 
 [default]
-y_pos=11
-x_pos=33
+x=11
+y=33
+z=51
 colour=0
 active_colour=6

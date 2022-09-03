@@ -1,7 +1,8 @@
 [[Features Line 0]]
 
 [default]
-y_pos=44
-x_pos=32
+x=44
+y=32
+z=29
 colour=0
 active_colour=3

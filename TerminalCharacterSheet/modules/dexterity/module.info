@@ -1,7 +1,8 @@
-[[DEX]]
+[[Dexterity]]
 
 [default]
-y_pos=1
-x_pos=19
+x=1
+y=19
+z=6
 colour=0
 active_colour=4

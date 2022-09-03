@@ -1,7 +1,8 @@
 [[Banner]]
 
 [default]
-y_pos=1
-x_pos=3
+x=1
+y=3
+z=1
 colour=0
 active_colour=0

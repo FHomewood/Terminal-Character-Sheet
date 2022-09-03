@@ -1,7 +1,8 @@
 [[Sleight of Hand]]
 
 [default]
-y_pos=11
-x_pos=44
+x=11
+y=44
+z=62
 colour=0
 active_colour=6

@@ -1,7 +1,8 @@
 [[Class]]
 
 [default]
-y_pos=54
-x_pos=10
+x=54
+y=10
+z=3
 colour=0
 active_colour=3

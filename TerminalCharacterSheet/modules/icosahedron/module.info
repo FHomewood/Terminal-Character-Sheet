@@ -1,7 +1,8 @@
 [[Icosahedron]]
 
 [default]
-y_pos=21
-x_pos=21
+x=21
+y=21
+z=20
 colour=0
 active_colour=3

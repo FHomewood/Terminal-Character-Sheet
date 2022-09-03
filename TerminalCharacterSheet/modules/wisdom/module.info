@@ -1,7 +1,8 @@
-[[WIS]]
+[[Wisdom]]
 
 [default]
-y_pos=1
-x_pos=34
+x=1
+y=34
+z=9
 colour=0
 active_colour=4

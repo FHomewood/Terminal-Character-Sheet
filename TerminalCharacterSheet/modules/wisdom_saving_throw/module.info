@@ -1,7 +1,8 @@
-[[WIS Saving Throw]]
+[[Wisdom Saving Throw]]
 
 [default]
-y_pos=29
-x_pos=23
+x=29
+y=23
+z=18
 colour=0
 active_colour=3

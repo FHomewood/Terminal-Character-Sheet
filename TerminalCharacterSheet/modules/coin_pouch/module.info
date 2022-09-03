@@ -1,7 +1,8 @@
 [[Coin Pouch]]
 
 [default]
-y_pos=66
-x_pos=45
+x=66
+y=45
+z=45
 colour=0
 active_colour=6

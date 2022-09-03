@@ -1,7 +1,8 @@
-[[INT Saving Throw]]
+[[Intelligence Saving Throw]]
 
 [default]
-y_pos=29
-x_pos=22
+x=29
+y=22
+z=17
 colour=0
 active_colour=3

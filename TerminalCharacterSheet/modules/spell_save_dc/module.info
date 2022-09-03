@@ -1,7 +1,8 @@
 [[Spell Save DC]]
 
 [default]
-y_pos=69
-x_pos=25
+x=69
+y=25
+z=67
 colour=0
 active_colour=4

@@ -1,7 +1,8 @@
 [[Stealth]]
 
 [default]
-y_pos=11
-x_pos=45
+x=11
+y=45
+z=63
 colour=0
 active_colour=6

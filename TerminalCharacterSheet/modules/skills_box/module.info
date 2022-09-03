@@ -1,7 +1,8 @@
 [[Skills Box]]
 
 [default]
-y_pos=10
-x_pos=27
+x=10
+y=27
+z=22
 colour=0
 active_colour=0

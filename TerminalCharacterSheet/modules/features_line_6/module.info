@@ -1,7 +1,8 @@
 [[Features Line 6]]
 
 [default]
-y_pos=44
-x_pos=38
+x=44
+y=38
+z=35
 colour=0
 active_colour=3

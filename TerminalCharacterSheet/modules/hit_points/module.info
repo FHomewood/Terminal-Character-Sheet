@@ -1,7 +1,8 @@
 [[Hit Points]]
 
 [default]
-y_pos=42
-x_pos=20
+x=42
+y=20
+z=26
 colour=0
 active_colour=1

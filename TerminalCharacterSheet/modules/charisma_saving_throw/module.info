@@ -1,7 +1,8 @@
-[[CHA Saving Throw]]
+[[Charisma Saving Throw]]
 
 [default]
-y_pos=29
-x_pos=24
+x=29
+y=24
+z=19
 colour=0
 active_colour=3

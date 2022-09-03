@@ -1,7 +1,8 @@
 [[Acrobatics]]
 
 [default]
-y_pos=11
-x_pos=29
+x=11
+y=29
+z=47
 colour=0
 active_colour=6

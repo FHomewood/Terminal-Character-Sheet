@@ -1,7 +1,8 @@
-[[STR Saving Throw]]
+[[Strength Saving Throw]]
 
 [default]
-y_pos=13
-x_pos=22
+x=13
+y=22
+z=14
 colour=0
 active_colour=3

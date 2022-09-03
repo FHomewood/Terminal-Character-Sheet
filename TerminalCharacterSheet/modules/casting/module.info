@@ -1,7 +1,8 @@
 [[Casting]]
 
 [default]
-y_pos=44
-x_pos=25
+x=44
+y=25
+z=65
 colour=0
 active_colour=4

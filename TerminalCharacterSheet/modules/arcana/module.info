@@ -1,7 +1,8 @@
 [[Arcana]]
 
 [default]
-y_pos=11
-x_pos=31
+x=11
+y=31
+z=49
 colour=0
 active_colour=6

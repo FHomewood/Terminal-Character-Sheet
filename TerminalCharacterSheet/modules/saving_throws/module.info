@@ -1,7 +1,8 @@
 [[Saving Throws]]
 
 [default]
-y_pos=12
-x_pos=20
+x=12
+y=20
+z=13
 colour=0
 active_colour=0

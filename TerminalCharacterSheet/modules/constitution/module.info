@@ -1,7 +1,8 @@
-[[CON]]
+[[Constitution]]
 
 [default]
-y_pos=1
-x_pos=24
+x=1
+y=24
+z=7
 colour=0
 active_colour=4

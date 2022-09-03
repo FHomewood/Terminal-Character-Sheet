@@ -1,7 +1,8 @@
-[[CON Saving Throw]]
+[[Constitution Saving Throw]]
 
 [default]
-y_pos=13
-x_pos=24
+x=13
+y=24
+z=16
 colour=0
 active_colour=3

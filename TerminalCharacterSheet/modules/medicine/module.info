@@ -1,7 +1,8 @@
 [[Medicine]]
 
 [default]
-y_pos=11
-x_pos=38
+x=11
+y=38
+z=56
 colour=0
 active_colour=6
