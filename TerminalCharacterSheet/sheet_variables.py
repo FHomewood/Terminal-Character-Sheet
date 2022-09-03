@@ -80,18 +80,24 @@ class Spell:
 def define_modules(context):
     modules_directory = Path(__file__).parent / "modules"
     module_paths = modules_directory.glob('./*/')
+    modules = {}
     for path in module_paths:
         with  open(path / "module.info", 'r') as info_file:
             contents = ''.join(info_file.readlines())
         with open(path / "module.art", 'r') as art_file:
-            module_art = ''.join(art_file.readlines())[0:-1]
+            art = ''.join(art_file.readlines())[0:-1]
 
-        module_name = re.search(r"\[\[(.*)\]\]",contents).group(1)
-        module_y = int(re.search(r"y_pos=(.*)",contents).group(1))
-        module_x = int(re.search(r"x_pos=(.*)",contents).group(1))
-        module_colour = int(re.search(r"active_colour=(.*)", contents).group(1))
-
-        context.modules[module_name] = InteractiveBlock((module_x, module_y), module_colour, module_art)
+        name = re.search(r"\[\[(.*)\]\]",contents).group(1)
+        x = int(re.search(r"x=(.*)",contents).group(1))
+        y = int(re.search(r"y=(.*)",contents).group(1))
+        z = int(re.search(r"z=(.*)",contents).group(1))
+        colour = int(re.search(r"active_colour=(.*)", contents).group(1))
+        modules[z] = [name, x, y, z, colour, art]
+    layers_dict = list(modules.keys())
+    layers_dict.sort()
+    for z in layers_dict:
+        module = modules[z]
+        context.modules[module[0]] = InteractiveBlock((module[2], module[1]), module[4], module[5])
 
 
 
