@@ -1,6 +1,7 @@
 import curses
-import numpy
-
+from numpy import random
+from pathlib import Path
+import re
 
 class InteractiveBlock:
 
@@ -77,330 +78,46 @@ class Spell:
 
 
 def define_modules(context):
-    context.modules["Header"] = InteractiveBlock((1, 2), 0,
-                                                 """.-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-.""")
-    context.modules["Banner"] = InteractiveBlock((3, 1), 0,
-                                                 """         ,),,)
-      \'     ',)
-     ,`  ,--.  ',  ,                        
-     :  /    }  G}'   DUNGEONS & DRAGONS  
-    ',  \\    ',,V     5E CHARACTER SHEET   
-    \\___\\_____;;l_____________________________________________________________
-  _/          ';/                                                            \\\\ 
- //|                                                        -                 \\\\
-// ;                       ,---.      ,                                       //
-\\\\ \\______________________/  _  \\___,'/______________________________________//
- \\\\_'/            VZ\\  '  /  \\  .' /                                      
-                  +FAR`.__,'    `.__,'""")
-    context.modules["Character Name"] = InteractiveBlock((10, 21), 3,
-                                                         """                    """)
-    context.modules["Class"] = InteractiveBlock((10, 54), 3,
-                                                """      """)
-    context.modules["Level"] = InteractiveBlock((10, 63), 3,
-                                                """  """)
-    context.modules["STR"] = InteractiveBlock((14, 1), 4,
-                                              """/------\\
-| STR: |
-[      ]
-[ (  ) ]
-\\\\<''>//""")
-    context.modules["DEX"] = InteractiveBlock((19, 1), 4,
-                                              """/------\\
-| DEX: |
-[      ]
-[ (  ) ]
-\\~:><:~/""")
-    context.modules["CON"] = InteractiveBlock((24, 1), 4,
-                                              """/------\\
-| CON: |
-[      ]
-[ (  ) ]
-\\_\\()/_/""")
-    context.modules["INT"] = InteractiveBlock((29, 1), 4,
-                                              """/------\\
-| INT: |
-[      ]
-[ (  ) ]
-\\+/{}\\+/""")
-    context.modules["WIS"] = InteractiveBlock((34, 1), 4,
-                                              """/------\\
-| WIS: |
-[      ]
-[ (  ) ]
-\\+_/\\_+/""")
-    context.modules["CHA"] = InteractiveBlock((39, 1), 4,
-                                              """/------\\
-| CHA: |
-[      ]
-[ (  ) ]
-\\"}--{"/""")
-    context.modules["Passive Perception"] = InteractiveBlock((44, 1), 4,
-                                                             """/------\\
-| PAS. |
-[ PER: ]
-[      ]
-\\::[]::/""")
-    context.modules["Proficiency Bonus"] = InteractiveBlock((15, 10), 0,
-                                                            """ .--------------------------. 
-{                            }
-{        PROFICIENCY BONUS   }
-{                            }
- '--------------------------' """)
-    context.modules["Saving Throws"] = InteractiveBlock((20, 12), 0,
-                                                        """ .----------------------. 
-{                         }
-{                         }
-{                         }
-{                         }
- '----------------------' """)
-    context.modules["STR Saving Throw"] = InteractiveBlock((22, 13), 3,
-                                                           """ STR    """)
-    context.modules["DEX Saving Throw"] = InteractiveBlock((23, 13), 3,
-                                                           """ DEX    """)
-    context.modules["CON Saving Throw"] = InteractiveBlock((24, 13), 3,
-                                                           """ CON    """)
-    context.modules["INT Saving Throw"] = InteractiveBlock((22, 29), 3,
-                                                           """    INT """)
-    context.modules["WIS Saving Throw"] = InteractiveBlock((23, 29), 3,
-                                                           """    WIS """)
-    context.modules["CHA Saving Throw"] = InteractiveBlock((24, 29), 3,
-                                                           """    CHA """)
-    context.modules["Icosahedron"] = InteractiveBlock((21, 21), 3,
-                                                      """ .:/\\:.  
-:\\/20\\/:
-:/\\``/\\:
-`._\\/_.' """)
-    context.modules["Separator 1"] = InteractiveBlock((26, 18), 0,
-                                                      """~~~~~~~~~~~~~~~~""")
-    context.modules["Skills Box"] = InteractiveBlock((27, 10), 0,
-                                                     """ .--------------------------. 
-{           SKILLS           }
-{                            }
-|                            |
-|                            |
-|                            |
-|                            |
-|                            |
-|                            |
-|                            |
-|                            |
-|                            |
-|                            |
-|                            |
-|                            |
-|                            |
-|                            |
-|                            |
-|                            |
-{                            }
-{                            }
- '--------------------------' """)
-    context.modules["Armour Class"] = InteractiveBlock((14, 42), 0,
-                                                       """   _.._   
- _/    \\_ 
-)   AC   (
-|        |
- \\      / 
-  '-..-'  """)
-    context.modules["Initiative"] = InteractiveBlock((14, 53), 4,
-                                                     """.------------.
-|/          \\|
-| INITIATIVE |
-|            |
-|\\          /|
-'------------'""")
-    context.modules["Speed"] = InteractiveBlock((14, 68), 0,
-                                                """.-----------.
-|/         \\|
-|   SPEED   |
-|      ft   |
-|\\         /|
-'-----------'""")
-    context.modules["Hit Points"] = InteractiveBlock((20, 42), 1,
-                                                     """ .-----------------------------------.
-{ HIT POINTS:                        }
-{ TEMP HIT POINTS:                   }
- '-----------------------------------'""")
-    context.modules["Combat Stats"] = InteractiveBlock((24, 42), 0,
-                                                       """.-----------.-------------.-----------.
-|/          #             #          \\|
-|           #             #           |
-|           #             #           |
-|\\          #             #          /|
-'-----------'-------------'-----------'""")
-    context.modules["Features Box"] = InteractiveBlock((30, 42), 0,
-                                                       """ .-----------------------------------.
-{                                     }
-{                                     }
-|                                     |
-|                                     |
-|                                     |
-|                                     |
-|                                     |
-|                                     |
-|                                     |
-|                                     |
-|                                     |
-|                                     |
-|                                     |
-|                                     |
-|                                     ]
-|                                     ]
-|                                     ]
- '...................................'""")
+    modules_directory = Path(__file__).parent / "modules"
+    module_paths = modules_directory.glob('./*/')
+    modules = {}
+    for path in module_paths:
+        with  open(path / "module.info", 'r') as info_file:
+            contents = ''.join(info_file.readlines())
+        with open(path / "module.art", 'r') as art_file:
+            art = ''.join(art_file.readlines())[0:-1]
+
+        name = re.search(r"\[\[(.*)\]\]",contents).group(1)
+        x = int(re.search(r"x=(.*)",contents).group(1))
+        y = int(re.search(r"y=(.*)",contents).group(1))
+        z = int(re.search(r"z=(.*)",contents).group(1))
+        colour = int(re.search(r"active_colour=(.*)", contents).group(1))
+        modules[z] = [name, x, y, z, colour, art]
+    layers_dict = list(modules.keys())
+    layers_dict.sort()
+    for z in layers_dict:
+        module = modules[z]
+        context.modules[module[0]] = InteractiveBlock((module[2], module[1]), module[4], module[5])
+
+
+
     context.modules["Features Box"].scroll = 0
-
-    context.modules["Features Line 0"] = InteractiveBlock((32, 44), 3,
-                                                          """___________________________________""")
     context.modules["Features Line 0"].function = feature_box_select(context, 0)
-
-    context.modules["Features Line 1"] = InteractiveBlock((33, 44), 3,
-                                                          """___________________________________""")
     context.modules["Features Line 1"].function = feature_box_select(context, 1)
-
-    context.modules["Features Line 2"] = InteractiveBlock((34, 44), 3,
-                                                          """___________________________________""")
     context.modules["Features Line 2"].function = feature_box_select(context, 2)
-
-    context.modules["Features Line 3"] = InteractiveBlock((35, 44), 3,
-                                                          """___________________________________""")
     context.modules["Features Line 3"].function = feature_box_select(context, 3)
-
-    context.modules["Features Line 4"] = InteractiveBlock((36, 44), 3,
-                                                          """___________________________________""")
     context.modules["Features Line 4"].function = feature_box_select(context, 4)
-
-    context.modules["Features Line 5"] = InteractiveBlock((37, 44), 3,
-                                                          """___________________________________""")
     context.modules["Features Line 5"].function = feature_box_select(context, 5)
-
-    context.modules["Features Line 6"] = InteractiveBlock((38, 44), 3,
-                                                          """___________________________________""")
     context.modules["Features Line 6"].function = feature_box_select(context, 6)
-
-    context.modules["Features Line 7"] = InteractiveBlock((39, 44), 3,
-                                                          """___________________________________""")
     context.modules["Features Line 7"].function = feature_box_select(context, 7)
-
-    context.modules["Features Line 8"] = InteractiveBlock((40, 44), 3,
-                                                          """___________________________________""")
     context.modules["Features Line 8"].function = feature_box_select(context, 8)
-
-    context.modules["Features Line 9"] = InteractiveBlock((41, 44), 3,
-                                                          """___________________________________""")
     context.modules["Features Line 9"].function = feature_box_select(context, 9)
-
-    context.modules["Features Line 10"] = InteractiveBlock((42, 44), 3,
-                                                           """___________________________________""")
     context.modules["Features Line 10"].function = feature_box_select(context, 10)
-
-    context.modules["Features Line 11"] = InteractiveBlock((43, 44), 3,
-                                                           """___________________________________""")
     context.modules["Features Line 11"].function = feature_box_select(context, 11)
-
-    context.modules["Features Line 12"] = InteractiveBlock((44, 44), 3,
-                                                           """___________________________________""")
     context.modules["Features Line 12"].function = feature_box_select(context, 12)
-
-    context.modules["Features Line 13"] = InteractiveBlock((45, 44), 3,
-                                                           """_______________________""")
     context.modules["Features Line 13"].function = feature_box_select(context, 13)
-
-    context.modules["Features Line 14"] = InteractiveBlock((46, 44), 3,
-                                                           """______________________""")
     context.modules["Features Line 14"].function = feature_box_select(context, 14)
-
-    context.modules["Features Line 15"] = InteractiveBlock((47, 44), 3,
-                                                           """______________________""")
     context.modules["Features Line 15"].function = feature_box_select(context, 15)
-
-    context.modules["Coin Pouch"] = InteractiveBlock((45, 66), 6,
-                                                     """_.-----------<
-[    P G S C  
-[             """)
-    context.modules["Footer"] = InteractiveBlock((50, 1), 0,
-                                                 """'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'""")
-    context.modules["Acrobatics"] = InteractiveBlock((29, 11), 6,
-                                                     """   Acrobatics               """)
-    context.modules["Animal Handling"] = InteractiveBlock((30, 11), 6,
-                                                          """   Animal Handling          """)
-    context.modules["Arcana"] = InteractiveBlock((31, 11), 6,
-                                                 """   Arcana                   """)
-    context.modules["Athletics"] = InteractiveBlock((32, 11), 6,
-                                                    """   Athletics                """)
-    context.modules["Deception"] = InteractiveBlock((33, 11), 6,
-                                                    """   Deception                """)
-    context.modules["History"] = InteractiveBlock((34, 11), 6,
-                                                  """   History                  """)
-    context.modules["Insight"] = InteractiveBlock((35, 11), 6,
-                                                  """   Insight                  """)
-    context.modules["Intimidation"] = InteractiveBlock((36, 11), 6,
-                                                       """   Intimidation             """)
-    context.modules["Investigation"] = InteractiveBlock((37, 11), 6,
-                                                        """   Investigation            """)
-    context.modules["Medicine"] = InteractiveBlock((38, 11), 6,
-                                                   """   Medicine                 """)
-    context.modules["Nature"] = InteractiveBlock((39, 11), 6,
-                                                 """   Nature                   """)
-    context.modules["Perception"] = InteractiveBlock((40, 11), 6,
-                                                     """   Perception               """)
-    context.modules["Performance"] = InteractiveBlock((41, 11), 6,
-                                                      """   Performance              """)
-    context.modules["Persuasion"] = InteractiveBlock((42, 11), 6,
-                                                     """   Persuasion               """)
-    context.modules["Religion"] = InteractiveBlock((43, 11), 6,
-                                                   """   Religion                 """)
-    context.modules["Sleight of Hand"] = InteractiveBlock((44, 11), 6,
-                                                          """   Sleight of Hand          """)
-    context.modules["Stealth"] = InteractiveBlock((45, 11), 6,
-                                                  """   Stealth                  """)
-    context.modules["Survival"] = InteractiveBlock((46, 11), 6,
-                                                   """   Survival                 """)
-    context.modules["Casting"] = InteractiveBlock((25, 44), 4,
-                                                  """ CASTING  
-          
-          
-          """)
-    context.modules["Attack Roll"] = InteractiveBlock((25, 55), 4,
-                                                      """ ATTACK ROLL 
-             
-             
-             """)
-    context.modules["Spell Save DC"] = InteractiveBlock((25, 69), 4,
-                                                        """ SPELL DC 
-          
-          
-          """)
-
-    context.modules["Popup"] = InteractiveBlock((17, 12), 4,
-                                                """ .-.------------------------------------------------.-.
-((o))                                                  )
- \\U/_______          __________________          _____/
-   |                                                 |
-   |                                                 |
-   |                                                 |
-   |                                                 |
-   |                                                 |
-   |                                                 |
-   |                                                 |
-   |                                                 |
-   |                                                 |
-   |                                                 |
-   |                                                 |
-   |                                                 |
-   |                                                 |
-   |                                                 |
-   |                                                 |
-   |                                                 |
-   |                                                 |
-   |                                                 |
-   |                                                 |
-   |                                                 |
-   |                                                 |
-   |____    _______    _________________  ____    ___|
-  /A\\                                                 \\
- ((o))                                                 )
-  '-'-------------------------------------------------'""")
     context.modules["Popup"].function = popup_function
     context.modules["Popup"].scroll = 0
     context.modules["Popup"].text = ""
@@ -493,7 +210,7 @@ def feature_box_select(context, line_index):
 def roll(context, n, k, b=0):
     def func(context):
         if mouse_event(context) == "Double Left Click":
-            rv = sum([numpy.random.randint(1, k+1) for roll_num in range(n)]) + b
+            rv = sum([random.randint(1, k+1) for roll_num in range(n)]) + b
             context.modules["Icosahedron"].var_array = [[22, 24, f'{rv:02}']]
     return func
 
