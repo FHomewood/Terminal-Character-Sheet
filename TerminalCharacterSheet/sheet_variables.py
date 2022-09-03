@@ -490,12 +490,11 @@ def feature_box_select(context, line_index):
     return func
 
 
-def roll(context, n, k, b):
+def roll(context, n, k, b=0):
     def func(context):
         if mouse_event(context) == "Double Left Click":
-            rv = sum([numpy.random.randint(1, k) for roll_num in n]) + b
+            rv = sum([numpy.random.randint(1, k+1) for roll_num in range(n)]) + b
             context.modules["Icosahedron"].var_array = [[22, 24, f'{rv:02}']]
-
     return func
 
 
