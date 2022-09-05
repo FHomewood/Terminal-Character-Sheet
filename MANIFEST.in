@@ -1,0 +1,2 @@
+include TerminalCharacterSheet/modules/*/module.art
+include TerminalCharacterSheet/modules/*/module.info

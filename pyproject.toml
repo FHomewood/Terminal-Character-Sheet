@@ -3,11 +3,9 @@ requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "TerminalCharacterSheet"
-version = "0.0.1"
-authors = [
-  { name="Frankie Homewood", email="F.Homewood@outlook.com" },
-]
+name = "terminal-character-sheet"
+version = "0.1.0"
+authors = [{ name="Frankie Homewood", email="F.Homewood@outlook.com" }]
 description = "Programmable ASCII Character Sheet"
 readme = "README.md"
 license = { file="LICENSE" }
@@ -15,9 +13,11 @@ requires-python = ">=3.9"
 classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: MIT License",
-    "Operating System :: OS Independent",
+    "Operating System :: Microsoft :: Windows",
 ]
+dependencies = []
 
 [project.urls]
 "Homepage" = "https://github.com/FHomewood/Terminal-Character-Sheet"
 "Bug Tracker" = "https://github.com/FHomewood/Terminal-Character-Sheet/issues"
+
