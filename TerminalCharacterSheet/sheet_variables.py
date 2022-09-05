@@ -49,12 +49,27 @@ class InteractiveBlock:
 
 
 class Item:
-    def __init__(self, name=None, description=None, weight=None, value=None, quantity=1):
+    def __init__(self, name="Nothing", description="You feel a small void in your pockets where your items should be.", weight="0", value="0", quantity=1):
         self.name = name
         self.description = description
         self.weight = weight
         self.value = value
         self.quantity = quantity
+
+    def __str__(self):
+        popup_text = f"""
+  {self.name} x{self.quantity}
+
+  {self.weight} lbs
+  {self.value} cp
+                ~~~~~~~~~~~~~~~~~
+ 
+"""
+
+        for line in neatify_string(self.description):
+            popup_text += f" {line}\n"
+
+        return popup_text
 
 
 class Spell:
@@ -75,6 +90,23 @@ class Spell:
         self.material = material
         self.duration = duration
         self.function = function
+
+    def __str__(self):
+        popup_text = f""" 
+  {self.name}
+  Level {self.level} {self.school}
+  
+  Cast Time: {self.cast_time}
+  Range: {self.range}
+  Duration: {self.duration}
+  {"V" * bool(self.verbal)}{"S" * bool(self.somatic)}{"M" * bool(self.material)}              {"C" * bool(self.concentration)} {"R" * bool(self.ritual)}
+                ~~~~~~~~~~~~~~~~~
+
+"""
+        for line in neatify_string(self.description):
+            popup_text += f" {line}\n"
+
+        return popup_text
 
 
 def define_modules(context):
@@ -125,7 +157,7 @@ def define_modules(context):
     context.modules["Popup"].active = False
 
 
-def neatify_string(context, string, splitlen=48):
+def neatify_string(string, splitlen=48):
     chunks = []
     while string != '':
         if len(string) >= splitlen:
@@ -154,47 +186,23 @@ def feature_box_select(context, line_index):
             if line_index < len(current_headings) - scroll_offset:
                 selected_heading = list(current_feature.keys())[line_index + scroll_offset]
                 selected_attribute = current_feature[selected_heading]
+
                 if type(selected_attribute) == dict:
                     context.feature_box_keys.append(selected_heading)
                     context.modules["Features Box"].scroll = 0
+
                 elif type(selected_attribute) == str:
                     string = selected_attribute
                     popup_text = f""" 
    {selected_heading}
  
 """
-                    for line in neatify_string(context, string):
+                    for line in neatify_string(string):
                         popup_text += f" {line}\n"
                     activate_popup(context, popup_text)
-                elif type(selected_attribute) == Spell:
-                    spell = selected_attribute
-                    popup_text = f""" 
-  {spell.name}
-  Level {spell.level} {spell.school}
-  
-  Cast Time: {spell.cast_time}
-  Range: {spell.range}
-  Duration: {spell.duration}
-  {"V" * bool(spell.verbal)}{"S" * bool(spell.somatic)}{"M" * bool(spell.material)}              {"C" * bool(spell.concentration)} {"R" * bool(spell.ritual)}
-                ~~~~~~~~~~~~~~~~~
 
-"""
-                    for line in neatify_string(context, spell.description):
-                        popup_text += f" {line}\n"
-                    activate_popup(context, popup_text)
-                elif type(selected_attribute) == Item:
-                    item = selected_attribute
-                    popup_text = f""" 
-  {item.name} x{item.quantity}
-
-  {item.weight} lbs
-  {item.value} cp
-                ~~~~~~~~~~~~~~~~~
- 
-"""
-                    for line in neatify_string(context, item.description):
-                        popup_text += f" {line}\n"
-                    activate_popup(context, popup_text)
+                else:
+                    activate_popup(context, str(selected_attribute))
         if mouse_event(context) in ["Right Click", "Double Right Click"]:
             context.feature_box_keys = context.feature_box_keys[:-1]
             context.modules["Features Box"].scroll = 0

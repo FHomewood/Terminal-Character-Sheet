@@ -96,7 +96,7 @@ Your Bardic Inspiration die changes when you reach certain levels in this class.
     c.features["Proficiencies"]["Tools"]["Mason's Tools"] = \
     """"""
     c.features["Proficiencies"]["Languages"]["Gnomish"] = """"""
-    c.features["Inventory"]["Equipment"] = tcs.Item()
+    c.features["Inventory"]["Equipment"]["Aleira"] = tcs.Item()
 
 
 def sheet_layout(c):
