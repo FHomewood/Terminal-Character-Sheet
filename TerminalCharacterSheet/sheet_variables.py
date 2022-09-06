@@ -1,6 +1,7 @@
 import curses
 from numpy import random
 from pathlib import Path
+import configparser
 import re
 
 class InteractiveBlock:
@@ -13,6 +14,7 @@ class InteractiveBlock:
         self.art = art
         self.var_array = []
         self.function = None
+        self.config = {}
 
     def replace_in_string(self, y, x, val):
         line_array = self.art.split('\n')
@@ -31,10 +33,20 @@ class InteractiveBlock:
         else:
             color = 0
 
-        for index, line in enumerate(self.art.split('\n')):
-            context.stdscr.addstr(self.pos[0] + index, self.pos[1], line, curses.color_pair(color))
+        if transparent_char := getattr(self, 'transparent_char', False):
+            x = self.pos[1]
+            y = self.pos[0]
+            for y_index, line, in enumerate(self.art.split('\n')):
+                for x_index, character in enumerate(line):
+                    if character !=transparent_char:
+                        context.stdscr.addstr(y + y_index,x + x_index,character,curses.color_pair(color))
+        else:
+            for index, line in enumerate(self.art.split('\n')):
+                context.stdscr.addstr(self.pos[0] + index, self.pos[1], line, curses.color_pair(color))
+        
         for y, x, line in self.var_array:
             context.stdscr.addstr(y, x, line, curses.color_pair(color))
+
 
     def mouse_in_block(self, context):
         t = self.pos[0]
@@ -108,28 +120,35 @@ class Spell:
 
         return popup_text
 
+class InfoParser(configparser.ConfigParser):
+    def as_dict(self):
+        d = dict(self._sections)
+        for k in d:
+            d[k] = dict(self._defaults, **d[k])
+            d[k].pop('__name__', None)
+        return d
+
 
 def define_modules(context):
     modules_directory = Path(__file__).parent / "modules"
     module_paths = modules_directory.glob('./*/')
     modules = {}
     for path in module_paths:
-        with  open(path / "module.info", 'r') as info_file:
-            contents = ''.join(info_file.readlines())
+        info = InfoParser()
+        info.read(path/'module.info')
         with open(path / "module.art", 'r') as art_file:
             art = ''.join(art_file.readlines())[0:-1]
-
-        name = re.search(r"\[\[(.*)\]\]",contents).group(1)
-        x = int(re.search(r"x=(.*)",contents).group(1))
-        y = int(re.search(r"y=(.*)",contents).group(1))
-        z = int(re.search(r"z=(.*)",contents).group(1))
-        colour = int(re.search(r"active_colour=(.*)", contents).group(1))
-        modules[z] = [name, x, y, z, colour, art]
+        module_info = info.as_dict()
+        key = list(module_info.keys())[0]
+        module_info[key]['art'] = art
+        z = module_info[key]['z']
+        modules[z] = module_info
     layers_dict = list(modules.keys())
     layers_dict.sort()
     for z in layers_dict:
-        module = modules[z]
-        context.modules[module[0]] = InteractiveBlock((module[2], module[1]), module[4], module[5])
+        key = list(modules[z].keys())[0]
+        module = modules[z][key]
+        context.modules[key] = InteractiveBlock((int(module['y']), int(module['x'])), int(module['active_colour']), module['art'])
 
 
 

@@ -52,11 +52,14 @@ class Character:
                     break
 
         except Exception as e:
-            self.context.util.log(f'An exception occurred: {e}', 'ERROR')
-        finally:
             end(self.context)
             for function in self.end:
                 function(self.context)
+            self.context.util.log(f'An exception occurred: {e}', 'ERROR')
+            raise e
+        end(self.context)
+        for function in self.end:
+            function(self.context)
 
     def add_function(self, function, trigger):
         if trigger == "before":
