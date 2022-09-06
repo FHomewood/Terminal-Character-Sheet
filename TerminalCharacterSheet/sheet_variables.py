@@ -33,7 +33,8 @@ class InteractiveBlock:
         else:
             color = 0
 
-        if transparent_char := getattr(self, 'transparent_char', False):
+        if 'transparent_char' in self.config.keys():
+            transparent_char = self.config['transparent_char']
             x = self.pos[1]
             y = self.pos[0]
             for y_index, line, in enumerate(self.art.split('\n')):
@@ -149,7 +150,9 @@ def define_modules(context):
         key = list(modules[z].keys())[0]
         module = modules[z][key]
         context.modules[key] = InteractiveBlock((int(module['y']), int(module['x'])), int(module['active_colour']), module['art'])
-
+        if config_keys := [key for key in list(module.keys()) if key not in ['x','y','z','colour','active_colour','art']]:
+            for config_key in config_keys:
+                context.modules[key].config[config_key] = module[config_key]
 
 
     context.modules["Features Box"].scroll = 0
