@@ -4,6 +4,7 @@ from pathlib import Path
 import configparser
 import re
 
+
 class InteractiveBlock:
 
     def __init__(self, pos, color, art):
@@ -39,15 +40,14 @@ class InteractiveBlock:
             y = self.pos[0]
             for y_index, line, in enumerate(self.art.split('\n')):
                 for x_index, character in enumerate(line):
-                    if character !=transparent_char:
-                        context.stdscr.addstr(y + y_index,x + x_index,character,curses.color_pair(color))
+                    if character != transparent_char:
+                        context.stdscr.addstr(y + y_index, x + x_index, character, curses.color_pair(color))
         else:
             for index, line in enumerate(self.art.split('\n')):
                 context.stdscr.addstr(self.pos[0] + index, self.pos[1], line, curses.color_pair(color))
-        
+
         for y, x, line in self.var_array:
             context.stdscr.addstr(y, x, line, curses.color_pair(color))
-
 
     def mouse_in_block(self, context):
         t = self.pos[0]
@@ -62,7 +62,8 @@ class InteractiveBlock:
 
 
 class Item:
-    def __init__(self, name="Nothing", description="You feel a small void in your pockets where your items should be.", weight="0", value="0", quantity=1):
+    def __init__(self, name="Nothing", description="You feel a small void in your pockets where your items should be.",
+                 weight="0", value="0", quantity=1):
         self.name = name
         self.description = description
         self.weight = weight
@@ -121,6 +122,7 @@ class Spell:
 
         return popup_text
 
+
 class InfoParser(configparser.ConfigParser):
     def as_dict(self):
         d = dict(self._sections)
@@ -136,7 +138,7 @@ def define_modules(context):
     modules = {}
     for path in module_paths:
         info = InfoParser()
-        info.read(path/'module.info')
+        info.read(path / 'module.info')
         with open(path / "module.art", 'r') as art_file:
             art = ''.join(art_file.readlines())[0:-1]
         module_info = info.as_dict()
@@ -149,11 +151,15 @@ def define_modules(context):
     for z in layers_dict:
         key = list(modules[z].keys())[0]
         module = modules[z][key]
-        context.modules[key] = InteractiveBlock((int(module['y']), int(module['x'])), int(module['active_colour']), module['art'])
-        if config_keys := [key for key in list(module.keys()) if key not in ['x','y','z','colour','active_colour','art']]:
+        context.modules[key] = InteractiveBlock(
+            (int(module['y']), int(module['x'])),
+            int(module['active_colour']),
+            module['art']
+        )
+        if config_keys := [key for key in list(module.keys()) if
+                           key not in ['x', 'y', 'z', 'colour', 'active_colour', 'art']]:
             for config_key in config_keys:
                 context.modules[key].config[config_key] = module[config_key]
-
 
     context.modules["Features Box"].scroll = 0
     context.modules["Features Line 0"].function = feature_box_select(context, 0)
@@ -238,10 +244,11 @@ def feature_box_select(context, line_index):
 
 
 def roll(context, n, k, b=0):
-    def func(context):
-        if mouse_event(context) == "Double Left Click":
-            rv = sum([random.randint(1, k+1) for roll_num in range(n)]) + b
-            context.modules["Icosahedron"].var_array = [[22, 24, f'{rv:02}']]
+    def func(_context):
+        if mouse_event(_context) == "Double Left Click":
+            rv = sum([random.randint(1, k + 1) for roll_num in range(n)]) + b
+            _context.modules["Icosahedron"].var_array = [[22, 24, f'{rv:02}']]
+
     return func
 
 
@@ -290,7 +297,6 @@ def get_mouse(context):
         if new_mouse_state[attribute] < 0:
             new_mouse_state[attribute] = old_mouse_state[attribute]
     context.mouse_state = tuple(new_mouse_state)
-
 
 def mouse_event(context):
     code = context.mouse_state[-1]
