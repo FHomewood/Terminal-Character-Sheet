@@ -6,6 +6,8 @@ verify_ssl = true
 
 [packages]
 pytest = "*"
+sphinx = "*"
+
 
 [requirements]
 python_version = "3.9"

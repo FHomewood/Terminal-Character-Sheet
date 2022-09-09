@@ -5,3 +5,4 @@
 **.egg-info
 **.lock
 **.log
+**/docs/build/
