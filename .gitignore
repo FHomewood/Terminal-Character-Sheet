@@ -1,7 +1,10 @@
 **debug**
+
 **/__pycache__/
-**/.idea/
-**/dist/
+/.idea/
+/dist/
+/venv/
+
 **.egg-info
 **.lock
 **.log
