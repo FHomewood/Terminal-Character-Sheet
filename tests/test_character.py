@@ -1,3 +1,5 @@
+# Copyright 2022 Frankie Homewood
+
 import TerminalCharacterSheet as tcs
 from unittest import mock
 import pytest

@@ -1,3 +1,5 @@
+# Copyright 2022 Frankie Homewood
+
 from pathlib import Path
 from datetime import datetime
 

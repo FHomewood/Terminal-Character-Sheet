@@ -1,3 +1,5 @@
+# Copyright 2022 Frankie Homewood
+
 import curses
 from pathlib import Path
 

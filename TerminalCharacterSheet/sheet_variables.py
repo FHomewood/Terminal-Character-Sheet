@@ -1,3 +1,5 @@
+# Copyright 2022 Frankie Homewood
+
 import curses
 from numpy import random
 from pathlib import Path
