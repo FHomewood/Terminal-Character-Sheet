@@ -290,14 +290,6 @@ def update_popup(context):
     context.modules["Popup"].var_array = temp_var_array[scroll_offset + 1:scroll_offset + 20]
 
 
-def get_mouse(context):
-    old_mouse_state = list(context.mouse_state)
-    new_mouse_state = list(curses.getmouse())
-    for attribute in range(len(new_mouse_state)):
-        if new_mouse_state[attribute] < 0:
-            new_mouse_state[attribute] = old_mouse_state[attribute]
-    context.mouse_state = tuple(new_mouse_state)
-
 def mouse_event(context):
     code = context.mouse_state[-1]
     return {

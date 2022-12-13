@@ -21,6 +21,17 @@ class Context:
             current_dict = current_dict[i]
         return current_dict
 
+    def getch(self):
+        key = self.stdscr.getch()
+        if key == curses.KEY_MOUSE:
+            old_mouse_state = list(self.mouse_state)
+            new_mouse_state = list(curses.getmouse())
+            for attribute in range(len(new_mouse_state)):
+                if new_mouse_state[attribute] < 0:
+                    new_mouse_state[attribute] = old_mouse_state[attribute]
+            self.mouse_state = tuple(new_mouse_state)
+        return key
+
 
 class Character:
     def __init__(self, init=None, update=None, end=None):
@@ -47,7 +58,7 @@ class Character:
                     function(self.context)
                 draw(self.context)
 
-                key = self.context.stdscr.getch()
+                key = self.context.getch()
                 if key == ord('q'):
                     break
 
@@ -121,8 +132,6 @@ def init(context):
 
 def update(context):
     context.stdscr.clear()
-    if context.mouse_available:
-        get_mouse(context)
 
     for identifier, block in context.modules.items():
         if block.mouse_in_block(context) and \
