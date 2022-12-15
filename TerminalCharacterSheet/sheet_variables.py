@@ -158,8 +158,9 @@ def define_modules(context):
             int(module['active_colour']),
             module['art']
         )
-        if config_keys := [key for key in list(module.keys()) if
-                           key not in ['x', 'y', 'z', 'colour', 'active_colour', 'art']]:
+        config_keys = [key for key in list(module.keys()) if
+                       key not in ['x', 'y', 'z', 'colour', 'active_colour', 'art']]
+        if config_keys:
             for config_key in config_keys:
                 context.modules[key].config[config_key] = module[config_key]
 

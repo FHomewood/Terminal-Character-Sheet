@@ -4,12 +4,12 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "terminal-character-sheet"
-version = "0.1.0-pre"
+version = "0.1.1-pre"
 authors = [{ name="Frankie Homewood", email="F.Homewood@outlook.com" }]
 description = "Programmable ASCII Character Sheet"
 readme = "README.md"
 license = { file="LICENSE" }
-requires-python = ">=3.9"
+requires-python = ">=3.7"
 classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: Apache Software License",
