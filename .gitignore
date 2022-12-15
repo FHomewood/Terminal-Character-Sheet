@@ -1,2 +1,10 @@
-__pycache__/
-*.bat
+**debug**
+
+**/__pycache__/
+/.idea/
+/dist/
+/venv/
+
+**.egg-info
+**.lock
+**.log
