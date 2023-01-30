@@ -159,13 +159,13 @@ def features_box_update(context):
             title_text = "~ Features ~"
         else:
             title_text = f'~ {context.feature_box_keys[-1]} ~'
-        context.modules["Features Box"].var_array = [[31, 61 - len(title_text) // 2, title_text]]
-        scroll_offset = context.modules["Features Box"].scroll
+        context.modules["features_box"].var_array = [[31, 61 - len(title_text) // 2, title_text]]
+        scroll_offset = context.modules["features_box"].scroll
 
         if len(headings) > i + scroll_offset:
-            context.modules[f'Features Line {i}'].var_array = [[32 + i, 44, f'{headings[i + scroll_offset]}']]
+            context.modules[f'features_line_{i}'].var_array = [[32 + i, 44, f'{headings[i + scroll_offset]}']]
         else:
-            context.modules[f'Features Line {i}'].var_array = [[0, 0, '']]
+            context.modules[f'features_line_{i}'].var_array = [[0, 0, '']]
 
 
 def end(context):

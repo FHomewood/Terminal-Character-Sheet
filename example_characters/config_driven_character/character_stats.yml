@@ -1,0 +1,76 @@
+stats:
+
+  # Characteristics
+  name: Corrin TossCobble
+  age: 25
+  alignment: Lawful Good
+  gender: Male
+
+  # Base stats
+  strength: 9
+  dexterity: 16
+  constitution: 16
+  intelligence: 13
+  wisdom: 14
+  charisma: 17
+
+  # Race stats
+  race: Lightfoot Halfling
+  size: Small (3'½")
+  weight: Light (44lbs)
+  speed: 2
+  race dexterity: +2
+  race charisma: +1
+  race features:
+    proficiencies:
+      languages:
+        - common
+        - halfling
+    features and traits:
+      racial traits:
+        - lucky
+        - brave
+        - halfling nimbleness
+        - naturally stealthy
+
+  # Class stats
+  character_class: Bard
+  saving_throws:
+    - dexterity
+    - charisma
+  level: 1
+  hit_dice: 1d8
+  proficiency_bonus: +2
+  class features:
+    proficiencies:
+      skill proficiencies:
+        - deception
+        - intimidation
+        - performance
+      weapons and armour:
+        - light armour
+        - simple weapons
+        - hand crossbows
+        - longswords
+        - rapiers
+        - short swords
+      tools:
+        - lute
+        - flute
+        - viol
+    features and traits:
+      class features:
+        - bardic inspiration
+        - spellcasting
+
+  # Background stats
+  background: stone mason guild artisan
+  background features:
+    proficiencies:
+      languages:
+        - common
+      skill proficiencies:
+        - insight
+        - perception
+      tools:
+        - masons tools

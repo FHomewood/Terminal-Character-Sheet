@@ -163,28 +163,28 @@ def define_modules(context):
             for config_key in config_keys:
                 context.modules[key].config[config_key] = module[config_key]
 
-    context.modules["Features Box"].scroll = 0
-    context.modules["Features Line 0"].function = feature_box_select(context, 0)
-    context.modules["Features Line 1"].function = feature_box_select(context, 1)
-    context.modules["Features Line 2"].function = feature_box_select(context, 2)
-    context.modules["Features Line 3"].function = feature_box_select(context, 3)
-    context.modules["Features Line 4"].function = feature_box_select(context, 4)
-    context.modules["Features Line 5"].function = feature_box_select(context, 5)
-    context.modules["Features Line 6"].function = feature_box_select(context, 6)
-    context.modules["Features Line 7"].function = feature_box_select(context, 7)
-    context.modules["Features Line 8"].function = feature_box_select(context, 8)
-    context.modules["Features Line 9"].function = feature_box_select(context, 9)
-    context.modules["Features Line 10"].function = feature_box_select(context, 10)
-    context.modules["Features Line 11"].function = feature_box_select(context, 11)
-    context.modules["Features Line 12"].function = feature_box_select(context, 12)
-    context.modules["Features Line 13"].function = feature_box_select(context, 13)
-    context.modules["Features Line 14"].function = feature_box_select(context, 14)
-    context.modules["Features Line 15"].function = feature_box_select(context, 15)
-    context.modules["Popup"].function = popup_function
-    context.modules["Popup"].scroll = 0
-    context.modules["Popup"].text = ""
-    context.modules["Popup"].render = False
-    context.modules["Popup"].active = False
+    context.modules["features_box"].scroll = 0
+    context.modules["features_line_0"].function = feature_box_select(context, 0)
+    context.modules["features_line_1"].function = feature_box_select(context, 1)
+    context.modules["features_line_2"].function = feature_box_select(context, 2)
+    context.modules["features_line_3"].function = feature_box_select(context, 3)
+    context.modules["features_line_4"].function = feature_box_select(context, 4)
+    context.modules["features_line_5"].function = feature_box_select(context, 5)
+    context.modules["features_line_6"].function = feature_box_select(context, 6)
+    context.modules["features_line_7"].function = feature_box_select(context, 7)
+    context.modules["features_line_8"].function = feature_box_select(context, 8)
+    context.modules["features_line_9"].function = feature_box_select(context, 9)
+    context.modules["features_line_10"].function = feature_box_select(context, 10)
+    context.modules["features_line_11"].function = feature_box_select(context, 11)
+    context.modules["features_line_12"].function = feature_box_select(context, 12)
+    context.modules["features_line_13"].function = feature_box_select(context, 13)
+    context.modules["features_line_14"].function = feature_box_select(context, 14)
+    context.modules["features_line_15"].function = feature_box_select(context, 15)
+    context.modules["popup"].function = popup_function
+    context.modules["popup"].scroll = 0
+    context.modules["popup"].text = ""
+    context.modules["popup"].render = False
+    context.modules["popup"].active = False
 
 
 def neatify_string(string, splitlen=48):
@@ -210,7 +210,7 @@ def feature_box_select(context, line_index):
             current_feature = current_feature[i]
 
         current_headings = list(current_feature.keys())
-        scroll_offset = context.modules["Features Box"].scroll
+        scroll_offset = context.modules["features_box"].scroll
         if mouse_event(context) == "Double Left Click":
 
             if line_index < len(current_headings) - scroll_offset:
@@ -219,7 +219,7 @@ def feature_box_select(context, line_index):
 
                 if type(selected_attribute) == dict:
                     context.feature_box_keys.append(selected_heading)
-                    context.modules["Features Box"].scroll = 0
+                    context.modules["features_box"].scroll = 0
 
                 elif type(selected_attribute) == str:
                     string = selected_attribute
@@ -235,11 +235,11 @@ def feature_box_select(context, line_index):
                     activate_popup(context, str(selected_attribute))
         if mouse_event(context) in ["Right Click", "Double Right Click"]:
             context.feature_box_keys = context.feature_box_keys[:-1]
-            context.modules["Features Box"].scroll = 0
+            context.modules["features_box"].scroll = 0
         if mouse_event(context) == "Scroll Up":
-            context.modules["Features Box"].scroll = max(0, context.modules["Features Box"].scroll - 1)
+            context.modules["features_box"].scroll = max(0, context.modules["Features Box"].scroll - 1)
         if mouse_event(context) == "Scroll Down":
-            context.modules["Features Box"].scroll = min(context.modules["Features Box"].scroll + 1,
+            context.modules["features_box"].scroll = min(context.modules["Features Box"].scroll + 1,
                                                          len(current_headings) - 1)
 
     return func
@@ -249,7 +249,7 @@ def roll(context, n, k, b=0):
     def func(_context):
         if mouse_event(_context) == "Double Left Click":
             rv = sum([random.randint(1, k + 1) for roll_num in range(n)]) + b
-            _context.modules["Icosahedron"].var_array = [[22, 24, f'{rv:02}']]
+            _context.modules["icosahedron"].var_array = [[22, 24, f'{rv:02}']]
 
     return func
 
@@ -259,29 +259,29 @@ def popup_function(context):
         for index, block in context.modules.items():
             if block.render: block.active = True
         context.mouse_state = (0, 0, 0, 0, 0)
-        context.modules["Popup"].render = False
-        context.modules["Popup"].active = False
+        context.modules["popup"].render = False
+        context.modules["popup"].active = False
     if "Scroll Up" in mouse_event(context):
-        context.modules["Popup"].scroll = max(0, context.modules["Popup"].scroll - 1)
+        context.modules["popup"].scroll = max(0, context.modules["popup"].scroll - 1)
     if "Scroll Down" in mouse_event(context):
-        context.modules["Popup"].scroll = min(len(context.modules["Popup"].text.split("\n")) - 3,
-                                              context.modules["Popup"].scroll + 1)
+        context.modules["popup"].scroll = min(len(context.modules["popup"].text.split("\n")) - 3,
+                                              context.modules["popup"].scroll + 1)
     update_popup(context)
 
 
 def activate_popup(context, text=None):
     for index, block in context.modules.items():
         block.active = False
-    context.modules["Popup"].render = True
-    context.modules["Popup"].active = True
-    context.modules["Popup"].text = text
-    context.modules["Popup"].scroll = 0
+    context.modules["popup"].render = True
+    context.modules["popup"].active = True
+    context.modules["popup"].text = text
+    context.modules["popup"].scroll = 0
     update_popup(context)
 
 
 def update_popup(context):
-    text = context.modules["Popup"].text
-    scroll_offset = context.modules["Popup"].scroll
+    text = context.modules["popup"].text
+    scroll_offset = context.modules["popup"].scroll
     temp_var_array = [[0, 50, f'{scroll_offset}']]
     line_number = 0
     for paragraph in text.split('\n'):
@@ -289,7 +289,7 @@ def update_popup(context):
             temp_var_array += [[line_number - scroll_offset + 20, 16, chunk]]
             line_number += 1
     scroll_offset = min(len(temp_var_array), scroll_offset)
-    context.modules["Popup"].var_array = temp_var_array[scroll_offset + 1:scroll_offset + 20]
+    context.modules["popup"].var_array = temp_var_array[scroll_offset + 1:scroll_offset + 20]
 
 
 def mouse_event(context):
