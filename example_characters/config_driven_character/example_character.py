@@ -5,15 +5,17 @@ PROJECT_ROOT_DIR = '/home/frankiehomewood/Development/Terminal-Character-Sheet/'
 sys.path.append(PROJECT_ROOT_DIR)
 
 import TerminalCharacterSheet as tcs
-import yaml
+import TerminalCharacterSheet.utils as tcs_utils
 
+import yaml
+from pathlib import Path
 
 def set_up(context):
     c = context.character
 
-    with open('character_stats.yml', 'r') as stats_file:
+    with open(Path(__file__).parent/'character_stats.yml', 'r') as stats_file:
         stats = yaml.safe_load(stats_file)['stats']
-    c.features = merge_dicts([
+    c.features = tcs_utils.combine_features([
         stats.pop('race features',dict()),
         stats.pop('class features',dict()),
         stats.pop('background features',dict())
@@ -115,40 +117,7 @@ def assign_variables(context):
     context.modules["wisdom_saving_throw"].function = tcs.roll(c, 1, 20, mod(c.wisdom))
     context.modules["charisma_saving_throw"].function = tcs.roll(c, 1, 20, mod(c.charisma))
 
-def merge_dict(dict1: dict, dict2: dict) -> dict:
-    for key, val in dict1.items():
-        if type(val) == dict:
-            if key in dict2 and type(dict2[key] == dict):
-                merge_dict(dict1[key], dict2[key])
-        else:
-            if key in dict2:
-                dict1[key] = list(dict1[key]) + list(dict2[key])
 
-    for key, val in dict2.items():
-        if not key in dict1:
-            dict1[key] = val
-    return dict1
-
-def expand_dict_lists(dict_in: dict) -> dict:
-    for key,val in dict_in.items():
-        if type(val) == dict:
-            dict_in[key] = expand_dict_lists(dict_in[key])
-        elif type(val) == list:
-            list_to_expand = dict_in[key]
-            dict_in[key] = {}
-
-            for element in list_to_expand:
-                dict_in[key][element] = lookup_tooltip(element)
-    return dict_in
-
-
-
-def merge_dicts(_dict_list):
-    for i in range(1, len(_dict_list)):
-        _dict_list[0] = merge_dict(_dict_list[0], _dict_list[i])
-    merged_dict = _dict_list[0]
-    full_dict = expand_dict_lists(merged_dict)
-    return _dict_list[0]
 
 if __name__ == "__main__":
     corrin_tosscobble = tcs.Character()
