@@ -1,6 +1,6 @@
 # Copyright 2022 Frankie Homewood
 
-import TerminalCharacterSheet as tcs
+import terminal_character_sheet as tcs
 
 def roll_stats(c):
     c.strength = 9

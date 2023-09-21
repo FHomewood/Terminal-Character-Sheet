@@ -1,4 +1,4 @@
 # Copyright 2022 Frankie Homewood
 
-import TerminalCharacterSheet as tcs
+import terminal_character_sheet as tcs
 import pytest
