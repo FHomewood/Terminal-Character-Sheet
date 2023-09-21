@@ -1,21 +1,26 @@
 [build-system]
-requires = ["setuptools>=61.0"]
-build-backend = "setuptools.build_meta"
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
 
-[project]
+[tool.poetry]
 name = "terminal-character-sheet"
-version = "0.1.0-pre"
-authors = [{ name="Frankie Homewood", email="F.Homewood@outlook.com" }]
+version = "0.1.0-pre-2023-09-21"
 description = "Programmable ASCII Character Sheet"
+authors = "Frankie Homewood <F.Homewood@outlook.com>"
 readme = "README.md"
-license = { file="LICENSE" }
-requires-python = ">=3.9"
+license = "Apache-2.0"
+packages = [{include = "terminal-character-sheet"}]
 classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: Apache Software License",
     "Operating System :: OS Independent",
 ]
-dependencies = []
+
+[tool.poetry.dependencies]
+python = ">=3.9"
+pytest = "*"
+numpy = "*"
+windows-curses = {version = "*", sys_platform = "win32"}
 
 [project.urls]
 "Homepage" = "https://github.com/FHomewood/Terminal-Character-Sheet"
