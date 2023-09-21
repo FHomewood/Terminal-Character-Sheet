@@ -4,9 +4,9 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry]
 name = "terminal-character-sheet"
-version = "0.1.0-pre-2023-09-21"
+version = "0.1.0-pre"
 description = "Programmable ASCII Character Sheet"
-authors = "Frankie Homewood <F.Homewood@outlook.com>"
+authors = ["Frankie Homewood <F.Homewood@outlook.com>"]
 readme = "README.md"
 license = "Apache-2.0"
 packages = [{include = "terminal-character-sheet"}]
@@ -20,7 +20,7 @@ classifiers = [
 python = ">=3.9"
 pytest = "*"
 numpy = "*"
-windows-curses = {version = "*", sys_platform = "win32"}
+windows-curses = {version = "*", platform = "win32"}
 
 [tool.poetry.urls]
 "Homepage" = "https://github.com/FHomewood/Terminal-Character-Sheet"
