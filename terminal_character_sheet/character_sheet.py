@@ -3,8 +3,8 @@
 import curses
 from pathlib import Path
 
-from TerminalCharacterSheet import *
-from TerminalCharacterSheet.logger import LoggingUtil
+from terminal_character_sheet import *
+from terminal_character_sheet.logger import LoggingUtil
 
 
 class Context:
