@@ -22,6 +22,6 @@ pytest = "*"
 numpy = "*"
 windows-curses = {version = "*", sys_platform = "win32"}
 
-[project.urls]
+[tool.poetry.urls]
 "Homepage" = "https://github.com/FHomewood/Terminal-Character-Sheet"
 "Bug Tracker" = "https://github.com/FHomewood/Terminal-Character-Sheet/issues"
