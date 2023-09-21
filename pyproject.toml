@@ -9,7 +9,7 @@ description = "Programmable ASCII Character Sheet"
 authors = ["Frankie Homewood <F.Homewood@outlook.com>"]
 readme = "README.md"
 license = "Apache-2.0"
-packages = [{include = "terminal-character-sheet"}]
+packages = [{include = "terminal_character_sheet"}]
 classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: Apache Software License",
