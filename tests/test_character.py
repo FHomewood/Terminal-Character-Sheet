@@ -1,63 +1,36 @@
 # Copyright 2022 Frankie Homewood
 
-import terminal_character_sheet as tcs
-from unittest import mock
 import pytest
 
-
-def test_character_initialization_has_necessary_attributes():
-    corrin_tosscobble = tcs.Character()
-
-    assert hasattr(corrin_tosscobble, 'context')
-    assert hasattr(corrin_tosscobble, 'init')
-    assert hasattr(corrin_tosscobble, 'update')
-    assert hasattr(corrin_tosscobble, 'end')
-
-def test_custom_character_init_function_stored_correctly():
-
-    def init(context):
-        context.test_attribute = "test_attribute"
-
-    corrin_tosscobble = tcs.Character(init=init)
-
-    for function in corrin_tosscobble.init:
-        function(corrin_tosscobble.context)
-
-    actual = corrin_tosscobble.context.test_attribute
-
-    expected = "test_attribute"
-
-    assert actual == expected
+import terminal_character_sheet as tcs
 
 
-def test_custom_character_update_function_stored_correctly():
+def test_character_initializes_sub_systems():
+    character = tcs.Character()
 
-    def update(context):
-        context.test_attribute = "test_attribute"
-
-    corrin_tosscobble = tcs.Character(update=update)
-
-    for function in corrin_tosscobble.update:
-        function(corrin_tosscobble.context)
-
-    actual = corrin_tosscobble.context.test_attribute
-
-    expected = "test_attribute"
-
-    assert actual == expected
+    inventory = getattr(character, "inventory")
+    traits = getattr(character, "traits")
+    actions = getattr(character, "actions")
+    display = getattr(character, "display")
+    input_handler = getattr(character, "input_handler")
 
 
-def test_custom_character_end_function_stored_correctly():
-    def end(context):
-        context.test_attribute = "test_attribute"
+def test_character_creates_inventory_instance():
+    character = tcs.Character()
+    assert type(getattr(character, "inventory")) == type(tcs.Inventory())
 
-    corrin_tosscobble = tcs.Character(end=end)
+def test_character_creates_traits_instance():
+    character = tcs.Character()
+    assert type(getattr(character, "traits")) == type(tcs.Traits())
 
-    for function in corrin_tosscobble.end:
-        function(corrin_tosscobble.context)
+def test_character_creates_actions_instance():
+    character = tcs.Character()
+    assert type(getattr(character, "actions")) == type(tcs.Actions())
 
-    actual = corrin_tosscobble.context.test_attribute
+def test_character_creates_display_instance():
+    character = tcs.Character()
+    assert type(getattr(character, "display")) == type(tcs.Display())
 
-    expected = "test_attribute"
-
-    assert actual == expected
+def test_character_creates_input_handler_instance():
+    character = tcs.Character()
+    assert type(getattr(character, "input_handler")) == type(tcs.InputHandler())
