@@ -17,7 +17,7 @@ def test_context_initialization_has_necessary_attributes():
 
 
 def test_current_feature_function_returns_full_features_when_none_selected():
-    corrin_tosscobble = tcs.Character()
+    corrin_tosscobble = tcs.Character__Reference()
     context = corrin_tosscobble.context
 
     corrin_tosscobble.features = {
@@ -35,7 +35,7 @@ def test_current_feature_function_returns_full_features_when_none_selected():
 
 
 def test_current_feature_function_returns_correct_dictionary_when_keys_selected():
-    corrin_tosscobble = tcs.Character()
+    corrin_tosscobble = tcs.Character__Reference()
     context = corrin_tosscobble.context
 
     corrin_tosscobble.features = {

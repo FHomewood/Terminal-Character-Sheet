@@ -35,7 +35,7 @@ class Context:
         return key
 
 
-class Character:
+class Character__Reference:
     def __init__(self, init=None, update=None, end=None):
         self.context = Context(self)
 

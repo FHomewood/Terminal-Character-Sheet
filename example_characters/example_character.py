@@ -209,7 +209,7 @@ def assign_variables(context):
     context.modules["Charisma Saving Throw"].function = tcs.roll(c,1,20,mod(c.charisma))
 
 if __name__ == "__main__":
-    corrin_tosscobble = tcs.Character()
+    corrin_tosscobble = tcs.Character__Reference()
     corrin_tosscobble.add_function(set_up, trigger='before')
     corrin_tosscobble.add_function(assign_variables, trigger='during')
     corrin_tosscobble.enable_dynamic_features()
