@@ -1,5 +1,7 @@
 # Copyright 2022 Frankie Homewood
 
+from terminal_character_sheet.inventory import Inventory
+
 class Character:
     """Facade Character class to communicate between different subsystems"""
 
@@ -8,5 +10,5 @@ class Character:
         self.input_handler = None
 
         self.traits = None
-        self.inventory = None
+        self.inventory = Inventory()
         self.actions = None
