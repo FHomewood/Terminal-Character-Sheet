@@ -9,7 +9,7 @@ description = "Programmable ASCII Character Sheet"
 authors = ["Frankie Homewood <F.Homewood@outlook.com>"]
 readme = "README.md"
 license = "Apache-2.0"
-packages = [{include = "terminal_character_sheet"}]
+packages = [{ include = "terminal_character_sheet" }]
 classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: Apache Software License",
@@ -18,9 +18,11 @@ classifiers = [
 
 [tool.poetry.dependencies]
 python = ">=3.9"
-pytest = "*"
 numpy = "*"
-windows-curses = {version = "*", platform = "win32"}
+windows-curses = { version = "*", platform = "win32" }
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.4.2"
 
 [tool.poetry.urls]
 "Homepage" = "https://github.com/FHomewood/Terminal-Character-Sheet"
