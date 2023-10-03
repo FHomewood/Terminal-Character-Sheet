@@ -67,29 +67,28 @@ class Screen:
         curses.init_pair(5, curses.COLOR_MAGENTA, curses.COLOR_BLACK)
         curses.init_pair(6, curses.COLOR_YELLOW, curses.COLOR_BLACK)
 
-    @staticmethod
-    def red(self):
+    @classmethod
+    def red(cls):
         return curses.color_pair(1)
 
-    @staticmethod
-    def blue(self):
+    @classmethod
+    def blue(cls):
         return curses.color_pair(2)
 
-    @staticmethod
-    def green(self):
+    @classmethod
+    def green(cls):
         return curses.color_pair(3)
 
-    @staticmethod
+    @classmethod
     def cyan(self):
         return curses.color_pair(4)
 
-    @staticmethod
+    @classmethod
     def magenta(self):
         return curses.color_pair(5)
 
-    @property
     @classmethod
-    def yellow(self):
+    def yellow(cls):
         return curses.color_pair(6)
 
     def display_module(self, module):

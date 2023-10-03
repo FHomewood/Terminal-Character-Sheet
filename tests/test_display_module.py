@@ -12,6 +12,7 @@ def test_display_module_initializes_necessary_attributes():
     assert hasattr(module, "position")
     assert hasattr(module, "layer")
     assert hasattr(module, "color")
+    assert hasattr(module, "is_active")
     assert hasattr(module, "active_color")
 
 

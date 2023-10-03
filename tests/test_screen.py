@@ -6,6 +6,7 @@ from unittest.mock import patch
 from terminal_character_sheet.screen import Screen
 from terminal_character_sheet.display_module import DisplayModule
 
+
 def test_screen_initializes_necessary_attributes():
     screen = Screen()
 
@@ -40,6 +41,7 @@ def test_deactivate_closes_curses_window(endwin_mock, echo_mock, stdscr_mock, cb
 
     assert endwin_mock.call_count == 1
 
+
 @pytest.mark.skip
 # @patch.dict("sys.modules", curses=MagicMock())
 @patch("curses.initscr")
@@ -61,9 +63,19 @@ def test_module_errors_on_empty_module():
 
     screen.display_module(module)
 
+
 @pytest.mark.skip
 def test_module_displays_on_screen():
     screen = Screen()
     module = DisplayModule()
 
     screen.display_module(module)
+
+
+@pytest.mark.skip
+def test_color_functions_work_after_definition():
+    screen = Screen()
+
+    screen.define_color()
+
+    Screen.yellow()
