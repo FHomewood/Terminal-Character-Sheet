@@ -27,3 +27,10 @@ def test_set_module_ascii_art_directly():
 @pytest.mark.skip
 def test_set_module_ascii_art_by_file():
     pass
+
+
+def test_set_module_ascii_raises_error_on_invalid_input():
+    module = DisplayModule()
+
+    with pytest.raises(SystemError):
+        module = module.set_ascii()
